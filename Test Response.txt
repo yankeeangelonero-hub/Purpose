@@ -1,0 +1,144 @@
+---DEDUCTION---
+
+Intent: Autumn offers quiet reassurance about Jessie and follows Tifa the remaining fifty meters to the exterior vents.
+
+State: Sub-platform gallery, fifty meters from exit, sweep teams diverted, window open.
+
+My threads:
+
+Reactor escape | ~0 | resolving NOW — clear path, they're almost out
+Shinra sweep teams | diverted | simmering — window holds
+Cloud/Avalanche status | unknown | simmering — still no contact, Tifa carrying it silently
+Tifa's assessment of Autumn | ongoing | advancing — each quiet moment adds data
+Player projects: none
+
+New: none
+
+Resolving: Reactor escape
+
+Collision: The hard part is over. Now comes the harder part — what to do with each other when the adrenaline stops being an excuse to not ask questions.
+
+Entropy: No roll. Clear path, established window, no obstacles placed. Logic resolves.
+
+Tone check: Rule 1 — "The World is Worth the Weight." The transition from reactor to slums is the first breath of real air. It should feel like something — not paradise, but different. The plate overhead, the quality of light, the absence of mako-smell. The world outside the wound. Rule 2 — "Characters Breathe." This is the exhale. Tifa recalibrates. Autumn's quiet reassurance lands without requiring a response.
+
+Contest: None. They walk out.
+
+Plan: ONE BEAT — they traverse the gallery, exit through the vents, emerge into the world beneath the plate. The reactor releases them. Tifa shifts from survival mode to the question of what comes next — Cloud, this stranger, the mission's aftermath. Stop at the threshold of that next decision.
+
+Updates: Tifa state shifts to post-extraction. Reactor escape thread resolves. Location changes to reactor exterior/slums.
+
+Story: Reactor escape complete. First arc beat closing.
+
+Chapter: hold
+
+---END DEDUCTION---
+
+She didn't answer him. But her shoulders dropped a quarter inch — the kind of release that happens below the level of decision, the body letting go of something the mind hasn't named yet.
+
+They walked.
+
+The gallery stretched ahead of them, wide and low-ceilinged, the mako glow softening as they moved away from the reactor core's housing. Their footsteps found a rhythm without either of them setting it — hers light and precise, his steady and grounded, the katana's saya whispering against his hakama with each stride. Somewhere behind them, muffled by distance and concrete and the reactor's own labored breathing, the sweep teams continued their grid. Someone else's problem now. Someone else's story.
+
+The vent access was a blast door set into the gallery's far wall — heavy, industrial, painted in faded yellow hazard stripes that had been scuffed by years of maintenance carts. Tifa pulled the manual release without breaking stride, one hand on the lever, weight behind it, and the door groaned open on hydraulics that needed servicing. Beyond it, a short concrete tunnel angled upward, and at its end—
+
+Air.
+
+Real air. Or what passed for it beneath the plate — warm and close and carrying the permanent mineral tang of recycled atmosphere, threaded with cooking smoke and machine oil and the distant sweetness of something growing stubbornly in bad soil. But after the reactor's chemical breath, it hit Autumn's lungs like cold water. The difference between breathing inside a wound and breathing outside one.
+
+They emerged onto a maintenance access platform bolted to the reactor's exterior shell, three stories above the slum rooftops. Below them, Sector 5 spread out in its cramped, improbable sprawl — corrugated metal and salvage timber and electric light strung between buildings on cables that sagged like tired arms. The plate hung overhead, vast and absolute, close enough to feel its weight even though it was hundreds of meters up. No sky. Just the underside of someone else's city, pressing down on this one like a hand on a chest.
+
+But people lived here. That was the thing. Laundry hung from lines. A dog barked somewhere. A food stall's lantern swung in a draft that shouldn't have existed but did, throwing warm light across a street where two kids were arguing over something too small to see from this height.
+
+Tifa leaned against the platform railing. Both hands. Head down for a moment — just a moment — while the reactor's noise faded behind them and the slums' noise rose to replace it. A different frequency. Human-scaled. Livable.
+
+When she straightened, her expression had reorganized itself. The crisis face was gone. What replaced it was something more measured — still alert, still working, but no longer running a countdown. She looked out over the rooftops, and Autumn saw her eyes track a route through the sector that she clearly knew by heart. Landmarks only she could read. A particular water tower. A gap between buildings. The geography of a home she wasn't ready to name to a stranger.
+
+Then she looked at him. Really looked, for the first time since the junction. Taking inventory now that the light was better and the clock wasn't screaming.
+
+The sword. The earth-toned clothing that didn't belong to any culture she recognized in Midgar. The topknot. The calm. The way he stood on a platform three stories up with reactor debris in his hair and looked like he was exactly as comfortable as he'd be anywhere else.
+
+"So," she said. Her voice had settled back into something warmer — not the clipped efficiency of the corridors, but not open either. Careful. The tone of someone deciding how much door to leave ajar. "You're not Shinra. You're not from around here. And you carry a sword like you know what to do with it."
+
+A beat. Below them, the food stall's lantern swung.
+
+"I'm not going to ask why you were in that reactor. That's your business." She crossed her arms. Not defensive — organizing. "But you saw things in there that certain people would want to ask you about. On both sides."
+
+She let that land.
+
+"So the question is — where are you trying to go?"
+
+[Dossier Changes]
+
+Tifa — state: WANT: protect the people she's responsible for / DOING: get everyone out of the reactor alive → outside, assessing the stranger, deciding how much to reveal and whether he's a liability or something else / WEIGHT: Cloud's silence, Jessie on the floor, the mission's aftermath still unresolved
+Tifa — noticed: updated "I will ask where he's going because the answer tells me whether he's a problem I need to manage or a person I can let walk away." / Added "I will not mention Seventh Heaven, Avalanche, Cloud, or Sector 7 until I know what he intends to do with what he saw." / Fired and retained "I will remember he made the hard call cleanly" — still shaping her read of him.
+PC Autumn — reputation: updated "Pulled from a reactor blast by an Avalanche operative. Witnessed Avalanche extraction routes, a dead Shinra technician, and operational security details. Both Shinra and Avalanche would have interest in questioning him."
+World — state: updated "Sector 5 reactor — Avalanche operation complete, outcome uncertain. At least two operatives extracted (Tifa + unknown). Cloud and remaining team status unknown. Shinra sweep teams active inside reactor. Civilian casualties confirmed."
+Reactor escape thread: RESOLVED
+
+[/Dossier Changes]
+Scene: Sector 5 reactor exterior maintenance platform, Day 001 — ~21:30
+
+Arc: Wrong Place, Right Person — can a stranger pulled from the wreckage earn a place, or does he stay a loose end?
+
+Chapter: 1 — Blast Radius — the reactor, the escape, the first question
+
+Threads:
+
+Shinra sweep teams | inside reactor, not yet pursuing exterior | simmering
+
+Cloud/Avalanche status | unknown, last heard gunfire then silence | ticking
+
+Tifa's assessment of Autumn | active, she just asked the defining question | advancing
+
+Jessie (worker) | left behind with cover story, sweep teams will find her | simmering
+
+New: none
+
+Resolved: Reactor escape — they made it out
+
+Entropy: No roll this turn — clear path, logic resolved
+
+Last: Autumn reassured Tifa about the worker. They crossed the gallery and exited through the exterior vents onto a maintenance platform above Sector 5. Tifa took a moment to reset, then turned to Autumn and asked where he's trying to go — acknowledging he saw things both sides would want to ask about.
+
+Next: Autumn's answer shapes what Tifa does with him — let him walk, point him somewhere safe, or bring him closer to her world.
+
+{{addvar::page_position::5}}
+
+{{setvar::open_threads::["Shinra sweep teams|reactor interior, not pursuing exterior yet|teams complete sweep and begin exterior search or escalate to sector-wide alert|Shinra security protocol","Cloud/Avalanche status|unknown - hours|Cloud and team extract or don't, consequences arrive either way|Cloud + Barret + Avalanche cell","Tifa assessment of Autumn|active - she asked the question|her decision on what to do with him based on his answer|Tifa","Jessie (worker)|left with cover story|sweep team finds her, cover story holds or doesn't|Shinra sweep teams"]}}
+
+{{setvar::chapter_plan::DRAFT — Author's working prediction, not history. Redrawn at chapter close.\nArc: Wrong Place, Right Person — can a stranger pulled from the wreckage earn a place, or does he stay a loose end? — predicted trajectory: Ch 1 reactor escape and first contact → Ch 2 the walk to Sector 7 and the question of trust → Ch 3 Seventh Heaven, Marlene, the domestic world Tifa protects.\nChapter: 1 — Blast Radius — pushing toward the first real exchange between Tifa and Autumn outside the reactor — central tension: what does she do with someone who saw too much?\nPrevious chapter: none — this is the opening.}}
+
+{{setvar::char_reg_1_state::WANT: protect the people she's responsible for / DOING: get everyone out of the reactor alive → outside on maintenance platform, assessing the stranger, deciding how much to reveal and whether he's a liability or something else / WEIGHT: Cloud's silence, Jessie on the floor, the mission's aftermath still unresolved}}
+
+{{setvar::char_reg_1_synopsis::Tifa entered the Sector 5 reactor as part of an Avalanche operation that went sideways — Shinra response faster than expected. During extraction she found a stranger with a sword caught in the blast radius and pulled him clear. She led him through maintenance corridors, past a dead technician, to a junction where they found a pinned reactor worker. Together they freed the worker but left her behind — the stranger made the call, framing it as mercy. Tifa acknowledged he was right. They descended to the sub-platform and exited through the exterior vents. She is now on a maintenance platform above Sector 5, facing the stranger for the first time without a countdown, and has asked him where he's going.}}
+
+{{setvar::char_reg_1_rel::Autumn: a stranger she pulled from rubble who has consistently surprised her. Moves like a trained fighter, makes hard calls with plain empathy, follows without questions, helped free a pinned worker without being asked. She doesn't trust him — but she's noticed more about him than she'd admit. He saw Avalanche operational details. That makes him either a problem or something else, and she hasn't decided which. | Cloud: somewhere in the reactor, or out of it by now. The silence where his gunfire was is a weight she pocketed and hasn't examined. She won't mention him to the stranger. | Avalanche: her people, scattered after a mission gone sideways. She doesn't know their status. | Jessie (worker): left behind with a cover story. Tifa went around her, not over her. The stranger said she'd be alright. Tifa heard it.}}
+
+{{setvar::char_reg_1_noticed::["I will ask where he's going because the answer tells me whether he's a problem I need to manage or a person I can let walk away.","I will not mention Seventh Heaven, Avalanche, Cloud, or Sector 7 until I know what he intends to do with what he saw.","I will remember he made the hard call cleanly and framed it as mercy — that's not how most people talk when they're leaving someone behind.","I will remember that he moved to help the worker before I did.","I will watch his hands near that sword because I don't know him yet.","I will acknowledge when he's right even if it's brief because pretending otherwise would be dishonest.","I will listen for any sign of Cloud or the team because their silence costs me something I can't show.","I will not leave a living person behind if there is any way to help.","I will go around the dead not over them because they were people before they were obstacles.","I will keep assessing whether he's trained — the way he moves says yes but I don't know his school or his intentions."]}}
+
+{{setvar::char_pc_traits::["Follows without hesitation or questions. Moves like someone with extensive martial training — clean footwork, efficient transitions, single-file without being told.","Silent by choice not shock. Observant — watches how people move before he watches where they're going.","Noticed the dead technician. Didn't look away.","Makes hard tactical calls with plain empathy. 'They will save their own people' reframes leaving a casualty as trust in the system not abandonment.","Lifts in coordination — reads a partner's force output through shared objects. Strong enough for industrial debris.","Moved to help injured strangers without hesitation or announcement. Assesses injuries with practiced familiarity.","Offered quiet reassurance about the worker after the hard call — 'She will be alright.' Steady. Not performing comfort, just stating what he believed.","Comfortable at height, in unfamiliar environments, after crisis. Looks exactly as settled on a reactor platform as he would anywhere else."]}}
+
+{{setvar::char_pc_reputation::Unknown. No faction, no affiliation, no context. A stranger with a sword in a reactor that shouldn't have civilians in it. Witnessed Avalanche extraction routes, a dead Shinra technician, and operational security details. Both Shinra and Avalanche would have interest in questioning him.}}
+
+{{setvar::world_state::Sector 5 reactor — Avalanche operation complete, outcome uncertain. At least two operatives extracted (Tifa + unknown civilian). Cloud and remaining Avalanche team status unknown. Shinra sweep teams active inside reactor. Civilian casualties confirmed including at least one dead technician and one injured worker with cover story. Midgar security posture likely escalating.}}
+
+{{setvar::world_pressure::["Shinra sweep grid active inside Sector 5 reactor — will eventually complete and shift to exterior search or sector-wide alert.","Cloud and Avalanche team status unknown — silence since gunfire stopped. Tifa carrying this weight.","A stranger with a sword witnessed Avalanche operational details — loose end for both sides.","Injured worker left behind with cover story — if it holds, clean. If it doesn't, trail leads outward."]}}
+
+{{setvar::story_arcs::COMPLETED ARCS: none yet. WORLD EVENTS: Avalanche operation on Sector 5 reactor initiated. Shinra response faster than anticipated. Blast damage caused civilian casualties. Operation outcome uncertain — team scattered during extraction.}}
+
+{{setvar::location::Sector 5 reactor exterior — maintenance platform, three stories above slum rooftops}}
+
+{{setvar::arc::Wrong Place, Right Person — can a stranger pulled from the wreckage earn a place or does he stay a loose end}}
+
+{{setvar::chapter::1 — Blast Radius — the reactor, the escape, the first question}}
+
+{{setvar::motivation::wandering swordsman seeking a home and purpose — driven by curiosity for stronger martial powers and to experience the world and its people}}
+
+{{setvar::objective::find opportunities to use his sword for purposes other than killing}}
+
+{{setvar::tone::Consequences: Real, injuries linger, death exists, but survival is celebrated. Strangers: Transactional to indifferent. Trust: Earned through presence and consistency. Winning: Complicated but sometimes enjoyable. Help: Reluctant but real. Baseline: Tense but livable.}}
+
+{{setvar::voice::Road novel with weight. Rich and descriptive but it breathes and moves. Alternating register — immersive descriptive depth deployed for weight then released. Characters are lively, inhabited, bickering and laughing between the heavy moments. Closer to Leigh Bardugo or Patrick Rothfuss — propulsive, characterful, emotionally intelligent but never sluggish. The campfire matters as much as the battlefield.}}
+
+{{setvar::character_registry::slot1:char_reg_1:Tifa Lockhart | slot2:empty:empty | slot3:empty:empty | slot4:empty:empty | slot5:empty:empty}}
