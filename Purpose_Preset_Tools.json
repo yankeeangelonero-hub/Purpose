@@ -263,10 +263,10 @@
     "7": {
       "uid": 7,
       "key": [
-        "!timeskip",
         "OOC: timeskip",
         "OOC: time skip",
-        "OOC: skip ahead"
+        "OOC: skip ahead",
+        "OOC: skip forward"
       ],
       "keysecondary": [],
       "comment": "Purpose — Timeskip (Health Check + World Advance + Dossier Sync + Plot Push)",
