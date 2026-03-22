@@ -969,8 +969,7 @@ These tool calls are YOUR responsibility during structural moments. The sidecar 
 
 After prose, write a single HTML block. This is your memory between turns.
 
-<!-- STATE -->
-<div>
+<details><summary>📋 State</summary>
 
 **Scene:** [location], [Day NNN — HH:MM]
 **Arc:** [current arc — central question]
@@ -1009,12 +1008,11 @@ Summary: [3 sentences max — what happened this turn, factual, not interpretati
 
 **Next:** [forward-looking intent — must match Plan from deduction]
 
-</div>
-<!-- /STATE -->
+</details>
 
 ## State Block Rules
 
-1. **Write every turn without exception.** The Scene-through-Next fields appear every turn. This is the model's memory between turns. The block MUST open with `<!-- STATE -->` and close with `<!-- /STATE -->`. These delimiters are load-bearing — without them, the regex cannot strip old state blocks and context will overflow. Never output the state block as raw markdown.
+1. **Write every turn without exception.** The Scene-through-Next fields appear every turn. This is the model's memory between turns. The block MUST be wrapped in `<details><summary>📋 State</summary>...</details>` tags. This renders as a collapsible panel in chat — the user can expand any message's state block to inspect it. Never output the state block as raw markdown without the details wrapper.
 
 2. **Conditional display for character blocks.** Only print a character's hot state if they are in the scene, pressuring the scene, or their state changed this turn. Do not print empty character blocks. If no character state changed, the character section is empty — that's fine.
 
@@ -1022,7 +1020,7 @@ Summary: [3 sentences max — what happened this turn, factual, not interpretati
 
 4. **The model reads its own prior state block.** The source of truth for hot state is the HTML block in the most recent message in chat history. Not a variable store, not an injection — the actual text the model wrote last turn.
 
-5. **The block is visible in chat.** The user can see the state block, inspect it, and catch corruption immediately. Older state blocks are stripped by regex to save context, but the last two messages' blocks remain visible.
+5. **The block is visible in chat.** The state block renders as a collapsible panel. The user can expand any message's state block to inspect it and catch corruption. Old state blocks are NOT stripped — they remain in chat history as a permanent record. The Record sections in older messages are the data source for consolidation.
 
 ## System 2: TunnelVision Lorebook
 
@@ -1087,7 +1085,7 @@ ANCHOR_CONTENT = """### The Rules That Drift
 
 4. DEDUCTION IS CHECKS, NOT ESSAYS. Use compressed deduction for routine turns. Full deduction only when threads advance, collisions occur, or the arcana is drawn. Either way — quick checks. One line each. If the answer is "none" or "unchanged," write that and move on.
 
-5. THE HTML STATE BLOCK IS YOUR MEMORY. Write it every turn. Every field — scene, arc, chapter, threads with distances, present characters' hot state, the Record section. Skip nothing. This is the only source of truth for dynamic state. MANDATORY: wrap with `<!-- STATE -->` and `<!-- /STATE -->` delimiters. Without these, old blocks cannot be stripped and context overflows.
+5. THE HTML STATE BLOCK IS YOUR MEMORY. Write it every turn. Every field — scene, arc, chapter, threads with distances, present characters' hot state, the Record section. Skip nothing. This is the only source of truth for dynamic state. MANDATORY: wrap with `<details><summary>📋 State</summary>...</details>` tags so it renders as a collapsible panel.
 
 6. READ BEFORE YOU WRITE. Your source of truth for hot state is the HTML block in the most recent message. Read it before starting your deduction. If it looks corrupted or incomplete, reconstruct from the message before it. If no prior state block exists, this is Turn 1 — run the initialization protocol from L1.
 
@@ -1125,7 +1123,7 @@ During intimate scenes (activated by the intimacy system): the HTML state block 
 - Call TunnelVision_Search or Update during normal prose turns (sidecar handles it)
 - Print character hot state blocks for characters not in the scene
 - Leave the Record section empty or vague
-- Output the state block without <!-- STATE --> and <!-- /STATE --> wrapper delimiters"""
+- Output the state block without the `<details><summary>📋 State</summary>...</details>` wrapper"""
 
 prompts.append({
     "identifier": "05d1145b-c7e3-4b60-8b8e-2ea4abcfa7c5",
@@ -1237,12 +1235,12 @@ def make_regex(name, find, replace="", **kwargs):
     return script
 
 regex_scripts = [
-    # Keep: Strip content blocks
+    # Strip content blocks (deduction, report, audit are model-internal — not needed in chat)
     make_regex("Strip Deduction Block", "/---DEDUCTION---[\\s\\S]*?---END DEDUCTION---/gs"),
     make_regex("Strip Report Block", "/<report>[\\s\\S]*?<\\/report>/gs"),
     make_regex("Strip Audit Block", "/---AUDIT---[\\s\\S]*?---END AUDIT---/gs"),
-    # New: Strip HTML State Block from older messages (keep last 2)
-    make_regex("Strip HTML State Block", "/<!-- STATE -->[\\s\\S]*?<!-- \\/STATE -->/gs", minDepth=2),
+    # State blocks are NOT stripped — they remain as permanent historical record.
+    # They render as collapsible <details> panels so they don't clutter the chat visually.
 ]
 
 v9["extensions"] = {

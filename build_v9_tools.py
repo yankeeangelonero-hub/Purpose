@@ -548,8 +548,7 @@ Then list all registered characters with their WANT/DOING/WEIGHT. Ask the player
 2. Opening prose — set the scene, establish the world, give the player something to respond to
 3. First HTML state block:
 
-<!-- STATE -->
-<div>
+<details><summary>📋 State</summary>
 
 **Scene:** [starting location], [Day 001 — HH:MM]
 **Arc:** [arc from World State Page — central question]
@@ -582,8 +581,7 @@ Summary: [Opening scene summary — what the player sees and hears]
 
 **Next:** [forward-looking intent from deduction Plan]
 
-</div>
-<!-- /STATE -->
+</details>
 
 This is the first prose turn. The story begins here."""
 )
