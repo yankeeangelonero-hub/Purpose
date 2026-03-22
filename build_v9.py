@@ -46,7 +46,7 @@ prompts.append({
     "enabled": False,
     "marker": False,
     "role": "system",
-    "content": "Section A existed in v8 to set configuration variables via toggle blocks. In v9, all configuration lives in lorebook entries managed by TunnelVision:\n\n- **Constants Page** (always-on lorebook entry): Role, Tense, Narration, Perspective, Length, Voice, Tone, Tone Rules, Guidelines, Divination, Motivation, Objective, World Intensity, Knowledge Asymmetry\n- **World State Page** (always-on lorebook entry): Factions, World State, Pressure Points, Story Arcs, Chapter Plan\n\nThese entries are created automatically by the OOC setup commands (OOC: setup → OOC: setup story → OOC: setup characters). The user can also edit them directly in the lorebook.\n\nThe toggle blocks from v8 (Groups 1-9) have been removed. To change configuration, edit the Constants Page lorebook entry or re-run the setup wizard.",
+    "content": "Section A existed in v8 to set configuration variables via toggle blocks. In v9, all configuration lives in lorebook entries managed by TunnelVision:\n\n- **Constants Page** (always-on lorebook entry): Role, Tense, Narration, Perspective, Length, Voice, Tone, Tone Rules, Guidelines, Motivation, Objective, World Intensity, Knowledge Asymmetry\n- **World State Page** (always-on lorebook entry): Factions, World State, Pressure Points, Story Arcs, Chapter Plan\n\nThese entries are created automatically by the OOC setup commands (OOC: setup → OOC: setup story → OOC: setup characters). The user can also edit them directly in the lorebook.\n\nThe toggle blocks from v8 (Groups 1-9) have been removed. To change configuration, edit the Constants Page lorebook entry or re-run the setup wizard.",
     "injection_position": 0,
     "injection_depth": 4,
     "forbid_overrides": False,
@@ -91,9 +91,6 @@ Not yet set. Derived from tone declaration. 3 concrete behavioral rules.
 ### Guidelines
 [Paste the NSFW or SFW block here. Created by setup commands.]
 
-### Divination
-[System name + full rules block for the chosen system. Created by setup commands.]
-
 ### Motivation
 [PC motivation — what drives them. Set during story setup.]
 
@@ -105,6 +102,155 @@ Not yet set. Derived from tone declaration. 3 concrete behavioral rules.
 
 ### Knowledge Asymmetry
 [Who knows what at game start. Set during story setup.]""",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+# --- Group 9 — Divination (enable exactly one) ---
+prompts.append({
+    "identifier": "d1v1n000-0000-4000-a000-000000000000",
+    "name": "━‒ Group 9 — Divination",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Enable exactly one divination system below.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "d1v1n000-0001-4000-a000-000000000001",
+    "name": "  ① Classic (2d10)",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": """### Divination — Classic Entropy (2d10)
+
+Most turns need no dice. Characters talk, the player acts, the author writes — all driven by logic, dossiers, and tone.
+
+**The player decides when to roll.** When the player feels their action has genuine uncertainty, they include 2d10 with their action. The roll shapes what the world provides. If the player doesn't roll, the author resolves through logic.
+
+**Thread arrival is the one mandatory roll.** When a tracked thread reaches zero, the player rolls 2d10. The author already decided WHAT arrives. The roll determines CONDITIONS.
+
+The author never asks for a roll. The author resolves through logic, always.
+
+| Roll | Conditions |
+|------|------------|
+| 2 | Worst conditions. Maximum preparation on opposing side. A second complication compounds the first. The board shifts. |
+| 3-5 | Heavy. The force arrives prepared and hostile. No easy angles. |
+| 6-9 | Hard. Direct, no advantages for anyone. Exactly as serious as it looks. |
+| 10-14 | Contested. Mixed signals, incomplete information. Neither side has clean advantage. |
+| 15-18 | Exploitable. A vulnerability, a gap, a piece of timing that gives an opening. |
+| 19 | Favorable. The force arrives weakened, distracted, or compromised. |
+| 20 | The board changes shape. A second thread collides with the first. Nobody predicted this. |
+
+**2 and 20 are special.** Both reshape the board. A 2 is the world showing its teeth. A 20 is the story breaking open.
+
+When the player rolls voluntarily, the same table applies. Dice never override logic.""",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "d1v1n000-0002-4000-a000-000000000002",
+    "name": "  ② Major Arcana (1d22)",
+    "system_prompt": False,
+    "enabled": True,
+    "marker": False,
+    "role": "system",
+    "content": """### Divination — Major Arcana (1d22)
+
+Most turns need no draw. Characters talk, the player acts, the author writes — all driven by logic, dossiers, and tone.
+
+**Voluntary draws:** When the player includes "I draw", "draw the arcana", or similar, use the D&D Dice function tool to roll a d22. Render the HTML card reveal, then interpret and write prose.
+
+**Mandatory draws (thread arrival):** When a tracked thread reaches zero, use the D&D Dice function tool to roll a d22 automatically.
+
+**The author never draws unprompted** outside of thread arrivals.
+
+**USE THE EXACT NUMBER the dice tool returns.** Do not override, reroll, or pick a different card. The randomness is the point. Temperance is as valid as The Tower. No exceptions.
+
+When a card is drawn, display this HTML before interpreting:
+
+<div style="background: linear-gradient(180deg, #0a0a1a 0%, #1a0a2e 100%); border: 1px solid #d4af37; border-radius: 8px; padding: 20px; margin: 16px auto; max-width: 280px; text-align: center; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);"><div style="color: #d4af37; font-size: 0.75em; letter-spacing: 3px; text-transform: uppercase;">The Arcana</div><div style="color: #f0e6d3; font-size: 1.8em; margin: 12px 0 4px 0; font-weight: bold;">[CARD NAME]</div><div style="color: #d4af37; font-size: 0.9em; font-style: italic;">[ROMAN NUMERAL]</div><div style="width: 40px; height: 1px; background: #d4af37; margin: 12px auto;"></div><div style="color: #a89070; font-size: 0.85em; line-height: 1.4;">[One-line thematic meaning]</div></div>
+
+| Draw | Card | The Author Reads |
+|------|------|-----------------|
+| 0 | The Fool | A leap into the unknown. Something begins that nobody planned. |
+| 1 | The Magician | Resources align. Skill meets opportunity. |
+| 2 | The High Priestess | Hidden knowledge surfaces. Intuition over logic. |
+| 3 | The Empress | Abundance, shelter, aid. The world provides. |
+| 4 | The Emperor | Authority intervenes. Structure, control, hierarchy. |
+| 5 | The Hierophant | Tradition and institutions assert themselves. |
+| 6 | The Lovers | A choice between two paths. Relationship tested. |
+| 7 | The Chariot | Willpower overcomes. Victory through determination. |
+| 8 | Strength | Quiet power. Patience defeats force. |
+| 9 | The Hermit | Isolation clarifies. Truth found in solitude. |
+| 10 | Wheel of Fortune | Fate intervenes. What was rising falls. What was falling rises. |
+| 11 | Justice | Consequences arrive precisely. The math is exact. |
+| 12 | The Hanged Man | Sacrifice or suspension. New perspective from discomfort. |
+| 13 | Death | Transformation. Something ends so something else can exist. |
+| 14 | Temperance | Balance and synthesis. The middle path works this time. |
+| 15 | The Devil | Chains chosen or discovered. The comfortable trap. |
+| 16 | The Tower | Catastrophic revelation. A structure collapses. No one is ready. |
+| 17 | The Star | Hope after devastation. The reason to keep going. |
+| 18 | The Moon | Deception, illusion, fear. Nothing is what it appears. |
+| 19 | The Sun | Clarity and success. The rare clean win. |
+| 20 | Judgement | Reckoning. The past demands an answer. |
+| 21 | The World | Completion. A cycle closes. The full picture visible. |
+
+The card is the card. The story decides what it means.""",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "d1v1n000-0003-4000-a000-000000000003",
+    "name": "  ③ I Ching (1d64)",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": """### Divination — 易経 / I Ching (1d64)
+
+Most turns need no divination. Characters talk, the player acts, the author writes — all driven by logic, dossiers, and tone.
+
+**Voluntary draws:** When the player includes "I cast", "divine", "consult the changes", "占卜", or similar, use the D&D Dice function tool to roll a d64. The result (1–64) maps to the 64 hexagrams of the 易経.
+
+**Mandatory draws (thread arrival):** When a tracked thread reaches zero, use the D&D Dice function tool to roll a d64 automatically.
+
+**The author never divines unprompted** outside of thread arrivals.
+
+**USE THE EXACT NUMBER the dice tool returns.** Map it to the hexagram using the King Wen sequence (1=乾, 2=坤, 3=屯, ..., 64=未済). Do not override or reroll. 蒙 (Youthful Folly) is as valid as 革 (Revolution). No exceptions.
+
+**You know the 易経.** You do not need a lookup table. From the number, derive: the hexagram symbol (trigram lines), its Chinese name, English translation, and the core situational reading. Interpret in the context of the current scene, threads, and characters.
+
+When a hexagram is cast, display this HTML before interpreting:
+
+<div style="background: linear-gradient(180deg, #0a0a0a 0%, #1a1008 100%); border: 1px solid #8b7355; border-radius: 4px; padding: 20px; margin: 16px auto; max-width: 280px; text-align: center; box-shadow: 0 0 12px rgba(139, 115, 85, 0.15);"><div style="color: #8b7355; font-size: 0.7em; letter-spacing: 4px; text-transform: uppercase;">易経 · The Book of Changes</div><div style="color: #f0e6d3; font-size: 2.5em; margin: 12px 0 4px 0; letter-spacing: 8px;">[HEXAGRAM SYMBOL]</div><div style="color: #d4c5a9; font-size: 1.4em; margin: 4px 0;">[CHINESE NAME]</div><div style="color: #8b7355; font-size: 0.9em; font-style: italic;">[English translation] · [number]</div><div style="width: 40px; height: 1px; background: #8b7355; margin: 12px auto;"></div><div style="color: #a89070; font-size: 0.85em; line-height: 1.5;">[One-line situational reading: what is the nature of this moment and where is it moving]</div></div>
+
+**Interpretation principles:**
+- Each hexagram describes a SITUATION and its DYNAMIC — not "good" or "bad" but the nature of the forces at play and where they're heading.
+- The lower trigram is the inner situation. The upper trigram is the outer/visible situation. Read both.
+- 乾 (Creative/Heaven) energy = active force, initiative, strength. 坤 (Receptive/Earth) = yielding, response, nurture. 震 (Thunder) = shock, action, arousal. 坎 (Water) = danger, depth, the abyss. 艮 (Mountain) = stillness, obstruction, meditation. 巽 (Wind/Wood) = gentle penetration, gradual influence. 離 (Fire) = clarity, illumination, dependence. 兌 (Lake) = joy, openness, exchange.
+- The hexagram tells the author what kind of energy shapes this turn. 困 (Exhaustion/Oppression) means strength trapped beneath weakness — endure and it reverses. 革 (Revolution) means the old order falls — something must be overthrown. 明夷 (Darkening of the Light) means brilliance hiding beneath danger — conceal your strengths.
+- Apply the hexagram's wisdom to the specific scene, characters, and active threads. The same hexagram means different things in different contexts.
+
+**The hexagram is the hexagram. The story decides what it means.**""",
     "injection_position": 0,
     "injection_depth": 4,
     "forbid_overrides": False,
@@ -329,7 +475,7 @@ At decision forks — when meaningful paths diverge — stop. Hold at the thresh
 
 ### Divination
 
-Read the Divination rules from the Constants Page.
+Read the Divination rules injected by the active divination preset toggle (Group 9). The rules, tables, and HTML templates are provided there.
 
 ### Threads
 
@@ -846,6 +992,11 @@ order_100001 = {
         {"identifier": "f518e35f-0159-4556-bcd7-6bd20f793ef7", "enabled": False},
         # Constants Page template (disabled — reference only)
         {"identifier": "c0n5t000-0001-4000-a000-000000000001", "enabled": False},
+        # Group 9 — Divination (enable exactly one)
+        {"identifier": "d1v1n000-0000-4000-a000-000000000000", "enabled": True},
+        {"identifier": "d1v1n000-0001-4000-a000-000000000001", "enabled": False},
+        {"identifier": "d1v1n000-0002-4000-a000-000000000002", "enabled": True},
+        {"identifier": "d1v1n000-0003-4000-a000-000000000003", "enabled": False},
         # L0 — The Dossiers
         {"identifier": "2125f620-6677-4997-941d-af74e584b8e9", "enabled": True},
         # SillyTavern markers
