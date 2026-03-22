@@ -1004,6 +1004,7 @@ Movement: [A → B, or: static]
 Deltas: [items gained/lost/transferred, resources changed — or: none]
 Relationship: [who shifted, direction, cause — or: none]
 Unspoken: [information characters noticed but haven't said aloud, tagged (unspoken) — or: none]
+Pending: [cold-state changes flagged for next consolidation — e.g. "Tifa synopsis needs update", "new key moment for Barret" — or: none]
 Summary: [3 sentences max — what happened this turn, factual, not interpretation]
 
 **Next:** [forward-looking intent — must match Plan from deduction]
@@ -1016,7 +1017,7 @@ Summary: [3 sentences max — what happened this turn, factual, not interpretati
 
 2. **Conditional display for character blocks.** Only print a character's hot state if they are in the scene, pressuring the scene, or their state changed this turn. Do not print empty character blocks. If no character state changed, the character section is empty — that's fine.
 
-3. **The Record section is a historical artifact.** Every message's Record section must contain enough structured information that if everything else is lost, the model can reconstruct context from the last few visible state blocks alone. The Record is factual — what happened, not interpretation. Unspoken information is explicitly tagged so the knowledge firewall has concrete markers to check.
+3. **The Record section is a historical artifact.** Every message's Record section must contain enough structured information that if everything else is lost, the model can reconstruct context from the last few visible state blocks alone. The Record is factual — what happened, not interpretation. Unspoken information is explicitly tagged so the knowledge firewall has concrete markers to check. The **Pending** field echoes any cold-state changes flagged in the deduction's Updates line — this is critical because the deduction is stripped by regex, but the Record survives. During consolidation, read the Pending fields from recent state blocks to know what needs pushing to TunnelVision.
 
 4. **The model reads its own prior state block.** The source of truth for hot state is the HTML block in the most recent message in chat history. Not a variable store, not an injection — the actual text the model wrote last turn.
 

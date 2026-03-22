@@ -577,6 +577,7 @@ Movement: [starting location]
 Deltas: none
 Relationship: none
 Unspoken: [any initial knowledge asymmetries]
+Pending: none
 Summary: [Opening scene summary — what the player sees and hears]
 
 **Next:** [forward-looking intent from deduction Plan]
