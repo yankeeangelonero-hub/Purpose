@@ -244,7 +244,7 @@
       "identifier": "dd546074-eb93-4017-aa3e-fa83dca48943",
       "name": "  ① Past Tense",
       "system_prompt": false,
-      "enabled": true,
+      "enabled": false,
       "marker": false,
       "role": "system",
       "content": "Write in past tense.",
@@ -258,7 +258,7 @@
       "identifier": "86856525-9937-41b6-a30d-95150e298b3b",
       "name": "  ② Present Tense",
       "system_prompt": false,
-      "enabled": false,
+      "enabled": true,
       "marker": false,
       "role": "system",
       "content": "Write in present tense.",
@@ -286,7 +286,7 @@
       "identifier": "5d5e773f-e0a1-465d-b789-2b287792727a",
       "name": "  ① Third-Person",
       "system_prompt": false,
-      "enabled": true,
+      "enabled": false,
       "marker": false,
       "role": "system",
       "content": "Write in third-person narration.",
@@ -314,7 +314,7 @@
       "identifier": "dd193663-d125-4184-9f3d-616afc9be83b",
       "name": "  ③ Second-Person",
       "system_prompt": false,
-      "enabled": false,
+      "enabled": true,
       "marker": false,
       "role": "system",
       "content": "Write in second-person narration.",
@@ -588,11 +588,11 @@
         },
         {
           "identifier": "dd546074-eb93-4017-aa3e-fa83dca48943",
-          "enabled": true
+          "enabled": false
         },
         {
           "identifier": "86856525-9937-41b6-a30d-95150e298b3b",
-          "enabled": false
+          "enabled": true
         },
         {
           "identifier": "8bf73e40-b6f7-4da7-8e67-e368b5147673",
@@ -600,7 +600,7 @@
         },
         {
           "identifier": "5d5e773f-e0a1-465d-b789-2b287792727a",
-          "enabled": true
+          "enabled": false
         },
         {
           "identifier": "4de867ed-c1d4-4f4f-93ca-16f4b6f1762f",
@@ -608,7 +608,7 @@
         },
         {
           "identifier": "dd193663-d125-4184-9f3d-616afc9be83b",
-          "enabled": false
+          "enabled": true
         },
         {
           "identifier": "0d89c4f3-b81d-45cd-bd46-91c0139d6207",
