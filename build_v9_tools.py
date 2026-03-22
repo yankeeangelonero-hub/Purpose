@@ -534,26 +534,13 @@ entries["10"] = make_entry(
 
 The player may have named characters to register, or you should propose the most important characters from the scenario and character cards.
 
-**You MUST create ALL of the following lorebook entries using TunnelVision_Remember tool calls. Each entry is a separate tool call. Do not skip any.**
+Use TunnelVision_Remember to create these lorebook entries:
+- **Phonebook** — all registered characters with slot numbers
+- **One dossier per character** (keyword: character name) — Synopsis, Relationships, Key Moments per L0 format
+- **PC Dossier** — Timeline + Reputation
+- **World State Page** (if not created in Phase 2) — Factions, World State, Pressure Points, Story Arcs, Chapter Plan
 
-**Entry 1: Character Registry / Phonebook** (always-on lorebook entry)
-Call TunnelVision_Remember. Content: list all registered characters with slot numbers and names. Mark empty slots.
-
-**Entry 2–6: Character Dossiers** (one per registered character, keyword-triggered on character name)
-For each character, call TunnelVision_Remember with:
-- **Synopsis** (Layer 2): Story from their perspective, past tense — derived from cards and scenario
-- **Relationships** (Layer 3): {{user}} entry + NPC/faction entries
-- **Key Moments** (Layer 4): Empty or seeded from scenario (format: Day NNN — HH:MM — anchor / event / delta)
-
-**Entry 7: PC Dossier** (always-on lorebook entry)
-Call TunnelVision_Remember. Content: Timeline (empty or seeded from scenario), Reputation (how the world sees the PC at game start — derived from persona card and scenario context)
-
-**Entry 8: World State Page** (always-on lorebook entry — if not already created by Phase 2)
-Call TunnelVision_Remember. Content: Active Factions (each with objective, resources, stance toward {{user}}), World State (macro-level reality), Pressure Points (where the world is about to break), Story Arcs (COMPLETED ARCS: none / WORLD EVENTS: opening conditions), Chapter Plan (arc question, chapter focus, pushing toward, tension).
-
-**Every entry above requires its own TunnelVision_Remember call. Do not output entry content as text — use the tool.**
-
-List all registered characters and their initial WANT/DOING/WEIGHT. Ask the player to confirm.
+Then list all registered characters with their WANT/DOING/WEIGHT. Ask the player to confirm.
 
 **After confirmation (or if the player says to proceed), write the opening:**
 
