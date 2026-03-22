@@ -824,13 +824,22 @@ After climax and afterglow:
 - Update the partner's relationship texture in the deduction Updates line (flagged for next consolidation)
 - Add the encounter as a key moment (flagged for next consolidation)
 
-**UPDATE INTIMATE HISTORY.** At afterglow, use TunnelVision Remember (first encounter) or TunnelVision Update (subsequent) to create/update the intimate history lorebook entry for this partner. Entry should be keyword-triggered on the partner's first name.
+**UPDATE INTIMATE HISTORY.** At afterglow, save the intimate history to the lorebook:
 
-Content format (single entry, concise — under 300 words):
+**First encounter:** Use TunnelVision Remember to create a new entry:
+- Title: "[Partner First Name] — Intimate History" (e.g., "Tifa — Intimate History")
+- Keywords: partner's first name (so it triggers when they appear in scene)
+- Content format below
+
+**Subsequent encounters:** Use TunnelVision Update on the existing entry:
+- Increment encounter count
+- Add newly discovered preferences, responses, sensitive spots
+- Update DYNAMIC if power balance shifted
+- Update EVOLUTION with how this encounter differed
+- Add to DISCOVERED if new physical specifics found
+
+**Content format** (single entry, concise — under 300 words):
 ENCOUNTERS: [count]; FIRST: [day context who-initiated]; DYNAMIC: [who-leads how]; RESPONDS: [top 3 triggers]; SEEKS: [core desire]; DISCOVERED: [top 3-4 physical specifics]; EVOLUTION: [one sentence how it differed from last time]
-
-If first encounter: create full structure with all fields.
-If existing: increment encounters, add newly discovered preferences/spots, update DYNAMIC if power shifted, update EVOLUTION, add to DISCOVERED.
 
 ## No Bookkeeping During Intimacy
 
