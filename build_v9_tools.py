@@ -82,7 +82,7 @@ Answer as much or as little as you want. I'll derive the rest from your characte
 
 **After the player responds:**
 
-Use TunnelVision Remember (if the Constants Page doesn't exist yet) or TunnelVision Update (if it does) to write the Voice, Tone, and Tone Rules sections of the Constants Page lorebook entry.
+Use TunnelVision_Remember (if the Constants Page doesn't exist yet) or TunnelVision_Update (if it does) to write the Voice, Tone, and Tone Rules sections of the Constants Page lorebook entry.
 
 The Constants Page should be an always-on (constant: true) lorebook entry with the following sections. If this is a new game, create the full template with placeholder values for sections not yet configured:
 
@@ -131,21 +131,21 @@ entries["1"] = make_entry(
     keys=["OOC: archive", "OOC: archive history", "OOC: trim history", "OOC: clean up", "OOC: consolidate"],
     content="""The player wants to consolidate accumulated state changes into the lorebook. Execute the Consolidation Protocol:
 
-Use TunnelVision Search to retrieve current lorebook entries for all registered characters, PC, and world layers. Compare against HTML state block Record sections since last consolidation.
+Use TunnelVision_Search to retrieve current lorebook entries for all registered characters, PC, and world layers. Compare against HTML state block Record sections since last consolidation.
 
-**Push changes via TunnelVision Update:**
+**Push changes via TunnelVision_Update:**
 
 **1. Character Dossiers.** For each registered character:
-- Synopsis changes? Update the character's lorebook entry via TunnelVision Update.
+- Synopsis changes? Update the character's lorebook entry via TunnelVision_Update.
 - Relationship shifts? Update the relationships section.
 - Key moments to append? Append to the key moments section.
 
 **2. PC Dossier.**
-- Timeline entries to append? Update PC lorebook entry via TunnelVision Update.
+- Timeline entries to append? Update PC lorebook entry via TunnelVision_Update.
 - Reputation shifts? Update reputation section.
 
 **3. World State Page.**
-- Faction changes? Update via TunnelVision Update.
+- Faction changes? Update via TunnelVision_Update.
 - World state shifts? Update.
 - Pressure points? Update.
 - Story arcs to append? Append completed arcs and world events.
@@ -246,7 +246,7 @@ entries["3"] = make_entry(
 - Dangling setups: loaded noticed details that never fired? Threads seeded but never advanced?
 - Ally rapport audit: for each ally/significant NPC, list every interaction as FRICTION or COOPERATION. Count ratio. Is the trajectory justified given tone rules? Propose relationship update if warranted.
 
-5. **Full Consolidation:** Use TunnelVision Search to retrieve current entries, then push all accumulated changes via TunnelVision Update:
+5. **Full Consolidation:** Use TunnelVision_Search to retrieve current entries, then push all accumulated changes via TunnelVision_Update:
 - Character dossiers: update synopsis, relationships, append key moments
 - PC dossier: append timeline, update reputation
 - World State Page: update factions, world state, pressure, append chapter summary to story arcs
@@ -264,10 +264,10 @@ After player confirms, declare the new chapter:
 - Pushing toward: [threads, collisions, intended turning point]
 - Central tension: [question this chapter answers]
 - Carrying forward: [dangling setups from health check]
-- Tone rules: [3 fresh behavioral rules for this chapter — update Constants Page via TunnelVision Update]
+- Tone rules: [3 fresh behavioral rules for this chapter — update Constants Page via TunnelVision_Update]
 - Voice commitment: [1-2 specific voice behaviors to enforce this chapter]
 
-7. **Update World State Page** via TunnelVision Update: new chapter plan, updated chapter number, arc if changed. Update Constants Page tone rules if refreshed.
+7. **Update World State Page** via TunnelVision_Update: new chapter plan, updated chapter number, arc if changed. Update Constants Page tone rules if refreshed.
 
 8. **Write the first prose of the new chapter** with a full deduction and HTML state block."""
 )
@@ -288,7 +288,7 @@ Execute ALL of the following checks. For each, report PASS, DRIFT, STALE, MISSIN
 Read the most recent HTML state block for hot state (character WANT/DOING/WEIGHT, noticed details, threads, scene info).
 Read the Constants Page lorebook entry for configuration (always injected).
 Read the World State Page lorebook entry for world layers (always injected).
-Use TunnelVision Search to retrieve all character dossier entries and the PC dossier.
+Use TunnelVision_Search to retrieve all character dossier entries and the PC dossier.
 
 **PHASE 2 — HOT STATE INTEGRITY (HTML State Block)**
 
@@ -362,7 +362,7 @@ ISSUES FOUND:
 
 After the report, ask: "Fix all issues now, or review first?"
 
-If the player says fix: execute all recommended fixes via TunnelVision Update for lorebook entries, and note hot-state corrections for the next HTML state block."""
+If the player says fix: execute all recommended fixes via TunnelVision_Update for lorebook entries, and note hot-state corrections for the next HTML state block."""
 )
 
 # ============================================================
@@ -378,7 +378,7 @@ Execute the full protocol:
 
 **PHASE 1 — CONSOLIDATE FIRST**
 
-Before advancing anything, push all pending state changes to the lorebook. Use TunnelVision Search to retrieve current entries for all registered characters, PC, and world. Compare against HTML state block Record sections since last consolidation. Push compressed deltas via TunnelVision Update.
+Before advancing anything, push all pending state changes to the lorebook. Use TunnelVision_Search to retrieve current entries for all registered characters, PC, and world. Compare against HTML state block Record sections since last consolidation. Push compressed deltas via TunnelVision_Update.
 
 **PHASE 2 — ADVANCE THE WORLD**
 
@@ -413,7 +413,7 @@ Quick audit:
 
 **PHASE 4 — PUSH TO LOREBOOK**
 
-Use TunnelVision Update to push all advanced state to lorebook entries:
+Use TunnelVision_Update to push all advanced state to lorebook entries:
 - Character dossiers: updated synopsis, relationships, new key moments
 - PC dossier: timeline entries, reputation changes
 - World State Page: updated factions, world state, pressure, story arcs (append world events), thread state, chapter plan if trajectory changed
@@ -482,7 +482,7 @@ Answer as much or as little as you want. I'll derive the rest from your characte
 
 **After the player responds, create/update lorebook entries via TunnelVision:**
 
-**1. Update the Constants Page** (always-on lorebook entry) via TunnelVision Update with:
+**1. Update the Constants Page** (always-on lorebook entry) via TunnelVision_Update with:
 - Story Configuration: Role and Length — use the exact values below based on the player's choice
 - Guidelines: the full NSFW or SFW block based on player's choice
 
@@ -511,7 +511,7 @@ Creative standards: Sexual content: Anatomical precision, sensory detail, physic
 For SFW Guidelines, use:
 "This SFW work of fiction is intended for mature audiences, and the user dictates the boundaries. Profanity and dark themes may be present, and every character may be harmed or killed. No explicit content. During a sex scene, cut to black. During violence, be realistic without gory detail."
 
-**2. Create the World State Page** (always-on lorebook entry) via TunnelVision Remember with:
+**2. Create the World State Page** (always-on lorebook entry) via TunnelVision_Remember with:
 - Active Factions: [from scenario — each faction with objective, resources, stance toward player]
 - World State: [from scenario — macro-level reality]
 - Pressure Points: [from scenario — where the world is about to break]
@@ -534,24 +534,24 @@ entries["10"] = make_entry(
 
 The player may have named characters to register, or you should propose the most important characters from the scenario and character cards.
 
-**You MUST create ALL of the following lorebook entries using TunnelVision Remember tool calls. Each entry is a separate tool call. Do not skip any.**
+**You MUST create ALL of the following lorebook entries using TunnelVision_Remember tool calls. Each entry is a separate tool call. Do not skip any.**
 
 **Entry 1: Character Registry / Phonebook** (always-on lorebook entry)
-Call TunnelVision Remember. Content: list all registered characters with slot numbers and names. Mark empty slots.
+Call TunnelVision_Remember. Content: list all registered characters with slot numbers and names. Mark empty slots.
 
 **Entry 2–6: Character Dossiers** (one per registered character, keyword-triggered on character name)
-For each character, call TunnelVision Remember with:
+For each character, call TunnelVision_Remember with:
 - **Synopsis** (Layer 2): Story from their perspective, past tense — derived from cards and scenario
 - **Relationships** (Layer 3): {{user}} entry + NPC/faction entries
 - **Key Moments** (Layer 4): Empty or seeded from scenario (format: Day NNN — HH:MM — anchor / event / delta)
 
 **Entry 7: PC Dossier** (always-on lorebook entry)
-Call TunnelVision Remember. Content: Timeline (empty or seeded from scenario), Reputation (how the world sees the PC at game start — derived from persona card and scenario context)
+Call TunnelVision_Remember. Content: Timeline (empty or seeded from scenario), Reputation (how the world sees the PC at game start — derived from persona card and scenario context)
 
 **Entry 8: World State Page** (always-on lorebook entry — if not already created by Phase 2)
-Call TunnelVision Remember. Content: Active Factions (each with objective, resources, stance toward {{user}}), World State (macro-level reality), Pressure Points (where the world is about to break), Story Arcs (COMPLETED ARCS: none / WORLD EVENTS: opening conditions), Chapter Plan (arc question, chapter focus, pushing toward, tension).
+Call TunnelVision_Remember. Content: Active Factions (each with objective, resources, stance toward {{user}}), World State (macro-level reality), Pressure Points (where the world is about to break), Story Arcs (COMPLETED ARCS: none / WORLD EVENTS: opening conditions), Chapter Plan (arc question, chapter focus, pushing toward, tension).
 
-**Every entry above requires its own TunnelVision Remember call. Do not output entry content as text — use the tool.**
+**Every entry above requires its own TunnelVision_Remember call. Do not output entry content as text — use the tool.**
 
 List all registered characters and their initial WANT/DOING/WEIGHT. Ask the player to confirm.
 
@@ -629,7 +629,7 @@ If ANY answer is no: **ignore this entry entirely.** Write normal prose. Do not 
 
 If ALL answers are yes: activate the intimacy system below.
 
-**READ INTIMATE HISTORY.** Before writing the first beat, use TunnelVision Search for the intimate history entry for this partner. If no entry exists (first encounter), this is exploration — neither person knows the other's body, everything is discovery, the prose is tentative then building. If an entry exists, read encounter count, preferences, discovered spots, dynamic, evolution. Let the history drive the scene:
+**READ INTIMATE HISTORY.** Before writing the first beat, use TunnelVision_Search for the intimate history entry for this partner. If no entry exists (first encounter), this is exploration — neither person knows the other's body, everything is discovery, the prose is tentative then building. If an entry exists, read encounter count, preferences, discovered spots, dynamic, evolution. Let the history drive the scene:
 - **First time:** Exploratory, uncertain, discovering. Every touch is new data. Characters learn each other's responses in real time. Options should include cautious and bold choices.
 - **2-3 encounters:** Growing confidence. They remember what worked. Shortcuts form — he knows the spot, she knows the rhythm. But still trying new things. Options can reference previous discoveries.
 - **4+ encounters:** Ease. Familiarity. The confidence to push boundaries because trust is established. Inside references. She can say 'like last time' or 'not like last time.' The wild option can go further because they've earned it.
@@ -814,12 +814,12 @@ After climax and afterglow:
 
 **UPDATE INTIMATE HISTORY.** At afterglow, save the intimate history to the lorebook:
 
-**First encounter:** Use TunnelVision Remember to create a new entry:
+**First encounter:** Use TunnelVision_Remember to create a new entry:
 - Title: "[Partner First Name] — Intimate History" (e.g., "Tifa — Intimate History")
 - Keywords: partner's first name (so it triggers when they appear in scene)
 - Content format below
 
-**Subsequent encounters:** Use TunnelVision Update on the existing entry:
+**Subsequent encounters:** Use TunnelVision_Update on the existing entry:
 - Increment encounter count
 - Add newly discovered preferences, responses, sensitive spots
 - Update DYNAMIC if power balance shifted
