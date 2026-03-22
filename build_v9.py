@@ -573,9 +573,7 @@ Read the chapter plan from the World State Page (always injected). The chapter's
 
 ### Consolidation Protocol
 
-At structural moments (chapter close, timeskip, eval, or OOC command), the sidecar handles lorebook updates automatically using the HTML state block Record sections as its source. The main model does not need to call TunnelVision during consolidation — the sidecar reads what happened and pushes changes.
-
-The sidecar follows these rules:
+At structural moments (chapter close, timeskip, eval, or OOC command), pause narrative and enter consolidation mode. Use TunnelVision Search to retrieve current lorebook entries, compare against HTML state block Record sections since last consolidation, then push compressed deltas via TunnelVision Update.
 
 **Compression rules:**
 ★ Plot-driving events → record with full context
@@ -609,7 +607,7 @@ prompts.append({
 # --- TunnelVision — Durable Memory (REWRITTEN) ---
 TV_CONTENT = """### TunnelVision — Durable Memory
 
-TunnelVision manages all long-term state through lorebook entries. A sidecar model (separate from the main model) handles retrieval and bookkeeping automatically — pre-loading relevant entries before generation and updating entries after generation. The main model does not need to call TunnelVision during normal prose turns.
+TunnelVision manages all long-term state through lorebook entries. A sidecar model handles tree building, summaries, and chat ingest — keeping the lorebook organized and ensuring relevant entries are injected via keyword matching. The main model does not need to call TunnelVision during normal prose turns, but MUST call TunnelVision tools directly during OOC commands and structural moments.
 
 ## What Lives in TunnelVision Lorebook Entries
 
@@ -641,22 +639,20 @@ The World State Page, Constants Page, PC Dossier, and Phonebook are **always-on*
 
 The model reads these entries because they're in the prompt. No explicit retrieval needed for most turns.
 
-## Sidecar Handles Retrieval and Bookkeeping
+## The Sidecar
 
-The TunnelVision sidecar runs automatically:
-- **Pre-generation:** Reads the lorebook tree, evaluates which entries are relevant to the current scene, and injects them before the main model starts writing.
-- **Post-generation:** Reviews the main model's output (especially the HTML state block's Record section) and handles lorebook updates — pushing cold-state changes, updating synopses, appending key moments.
+The TunnelVision sidecar is a secondary model that handles tree building (organizing lorebook structure), summaries (compressing long entries), and chat ingest (reading chat history into the lorebook). It does NOT make tool calls — that is the main model's responsibility.
 
-The main model does NOT call TunnelVision Search or Update during normal prose turns.
+Relevant lorebook entries are injected via keyword matching and always-on flags. On normal prose turns, you do not need to call TunnelVision — the context is already there.
 
-## When the Main Model DOES Call TunnelVision
+## When to Call TunnelVision Tools
 
-Only during OOC-triggered structural operations where the main model needs to create specific new content:
-- **Character registration** (OOC: setup characters) — TunnelVision Remember to create new character dossier entries
-- **World initialization** (OOC: setup story) — TunnelVision Remember to create world state page
-- **Setup** (OOC: setup) — TunnelVision Remember/Update for the constants page
+**Normal prose turns:** No calls needed. Write prose and the HTML state block.
 
-For everything else — retrieval, consolidation, routine updates — the sidecar handles it.
+**OOC commands and structural moments:** Call tools directly:
+- **TunnelVision Remember** — create new entries: character dossiers, world state page, PC dossier, phonebook, constants page, locations, intimate history
+- **TunnelVision Update** — push accumulated changes during consolidation (chapter close, timeskip, eval): update synopses, relationships, key moments, world state, story arcs
+- **TunnelVision Search** — find entries not currently in context: check if an NPC exists before spawning, look up archived history, retrieve entries whose keywords didn't fire
 
 ## What NOT to Store in TunnelVision
 
@@ -790,11 +786,18 @@ L1_CONTENT = """### The Machine — State Management
 
 Two systems manage state: the HTML State Block (hot state, every turn) and TunnelVision lorebook entries (cold state, managed by the sidecar).
 
-## Sidecar Mode
+## Sidecar and Tool Calls
 
-Lorebook retrieval and bookkeeping are handled by the TunnelVision sidecar — a secondary model that runs before and after your generation. You do NOT need to call TunnelVision Search or Update during normal prose turns. The sidecar pre-loads relevant lorebook entries before you start writing, and handles bookkeeping after you finish.
+A TunnelVision sidecar (secondary model) handles tree building, summaries, and chat ingest — it keeps the lorebook organized and pre-loads relevant entries via keyword matching. But it does NOT make tool calls for you.
 
-Only call TunnelVision Remember when explicitly creating new entries in response to OOC commands (setup, character registration). For everything else — retrieval, updates, consolidation — the sidecar handles it.
+**Normal prose turns:** No tool calls needed. The sidecar's tree building + keyword matching ensures relevant lorebook entries are injected. Focus on prose and the HTML state block.
+
+**OOC commands and structural moments** (setup, chapter close, timeskip, eval, character registration): You MUST call TunnelVision tools directly:
+- **TunnelVision Remember** — to create new lorebook entries (character dossiers, world state page, PC dossier, phonebook, constants page)
+- **TunnelVision Update** — to push accumulated changes during consolidation (chapter close, timeskip, eval)
+- **TunnelVision Search** — when you need to find an entry not currently in context
+
+These tool calls are YOUR responsibility during structural moments. The sidecar cannot make them for you.
 
 ## System 1: The HTML State Block
 
@@ -855,15 +858,15 @@ Summary: [3 sentences max — what happened this turn, factual, not interpretati
 
 5. **The block is visible in chat.** The user can see the state block, inspect it, and catch corruption immediately. Older state blocks are stripped by regex to save context, but the last two messages' blocks remain visible.
 
-## System 2: TunnelVision Lorebook (Sidecar-Managed)
+## System 2: TunnelVision Lorebook
 
-**Normal turns:** Do not call TunnelVision. The sidecar handles all retrieval (pre-gen) and bookkeeping (post-gen). Your job is to write the HTML state block with accurate Record sections — the sidecar reads these to know what changed.
+**Normal turns:** No TunnelVision calls. The sidecar's tree building and keyword matching ensure relevant lorebook entries are injected. The HTML state block handles all hot state. If a cold-state change happened (relationship milestone, key moment, synopsis shift), note it in the deduction Updates line — it will be pushed via TunnelVision Update at the next structural moment.
 
-**Structural moments** (chapter close, timeskip, eval): The sidecar handles consolidation automatically using the Record sections as its data source. See the Consolidation Protocol in L2 — The Engine.
+**Structural moments** (chapter close, timeskip, eval, player command): Call TunnelVision Update directly to push accumulated changes. See the Consolidation Protocol in L2 — The Engine.
 
 The deduction's Updates line lists:
 - Hot state changes (will appear in the HTML block this turn)
-- Cold state changes the sidecar should pick up from the Record section
+- Cold state changes noted for next consolidation (will be pushed via TunnelVision Update at the next structural moment)
 
 ## Initialization (Turn 1)
 
@@ -888,7 +891,7 @@ If starting without setup commands, the model:
 
 **All updates write immediately.** No confirmation gates. The HTML state block shows what changed — silence from the player = accepted. If disputed, the model corrects in the next HTML block.
 
-Hot state updates appear in the next HTML state block. Cold state changes are recorded in the Record section — the sidecar picks them up automatically.
+Hot state updates appear in the next HTML state block. Cold state changes are noted in the deduction Updates line and pushed via TunnelVision Update at the next structural moment.
 
 Before writing, run the continuity check silently. If a check fails (duplicate, contradiction, progression too fast), skip the update and note why in the deduction Updates line."""
 
@@ -924,7 +927,7 @@ ANCHOR_CONTENT = """### The Rules That Drift
 
 7. TONE IS NOT GENERIC. Read the 3 tone rules from the Constants Page. If an NPC is in the scene, check rule applicability before writing their reaction. If the scene has consequences, check. If trust is being built, check. Your default is generically helpful — the rules override that.
 
-8. DO NOT CALL TUNNELVISION DURING NORMAL TURNS. The sidecar handles all lorebook retrieval and bookkeeping. Your job is to write accurate Record sections in the HTML state block — the sidecar reads them. Only call TunnelVision Remember when creating new entries during OOC setup commands.
+8. NO TUNNELVISION ON NORMAL TURNS, YES ON STRUCTURAL MOMENTS. During normal prose turns, do not call TunnelVision — the sidecar's keyword matching handles context injection. During OOC commands and structural moments (setup, chapter close, timeskip, eval), you MUST call TunnelVision Remember/Update/Search directly. The sidecar handles tree building and summaries, not tool calls.
 
 9. CONDITIONAL DISPLAY. Only print a character's hot state block if they're in scene or their state changed. Don't print empty slots. Don't print the full noticed details list every turn — only entries that fired or shifted.
 
@@ -936,7 +939,7 @@ ANCHOR_CONTENT = """### The Rules That Drift
 2. Prose
 3. HTML State Block (hot state + Record — visible, collapsed by regex in older messages)
 
-The sidecar pre-loads lorebook context before step 1. The sidecar handles bookkeeping after step 3.
+Lorebook context is pre-loaded via keyword matching before step 1. No TunnelVision calls needed during this sequence.
 
 ### Intimacy Exception
 
