@@ -68,10 +68,8 @@ prompts.append({
 
 ### Story Configuration
 Role: [Roleplayer / Game Master / Writer]
-Tense: [past tense / present tense]
-Narration: [third-person / first-person / second-person]
-Perspective: [close-third with rotating character focus... / limited from {{char}}'s perspective... / limited from {{user}}'s perspective...]
 Length: [flexible based on current scene... / 1000-1500 words... / under 150 words / 150-300 words]
+Note: Tense, Narration, and Perspective are set via preset toggles (Groups 2-4), not here.
 
 ### Voice
 Not yet set. Declare via OOC describing how prose should feel. Focus on: sentence rhythm (compressed vs flowing), what the protagonist notices first, how internal observation sounds, how action is described, where humor lives, and when the voice goes quiet.
@@ -102,6 +100,174 @@ Not yet set. Derived from tone declaration. 3 concrete behavioral rules.
 
 ### Knowledge Asymmetry
 [Who knows what at game start. Set during story setup.]""",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+# --- Group 2 — Tense (enable exactly one) ---
+prompts.append({
+    "identifier": "2115804e-f068-4950-a6ce-b0e3b72ec18e",
+    "name": "━‒ Group 2 — Tense",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Enable exactly one tense option below.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "dd546074-eb93-4017-aa3e-fa83dca48943",
+    "name": "  ① Past Tense",
+    "system_prompt": False,
+    "enabled": True,
+    "marker": False,
+    "role": "system",
+    "content": "Write in past tense.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "86856525-9937-41b6-a30d-95150e298b3b",
+    "name": "  ② Present Tense",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Write in present tense.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+# --- Group 3 — Narration (enable exactly one) ---
+prompts.append({
+    "identifier": "8bf73e40-b6f7-4da7-8e67-e368b5147673",
+    "name": "━‒ Group 3 — Narration",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Enable exactly one narration option below.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "5d5e773f-e0a1-465d-b789-2b287792727a",
+    "name": "  ① Third-Person",
+    "system_prompt": False,
+    "enabled": True,
+    "marker": False,
+    "role": "system",
+    "content": "Write in third-person narration.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "4de867ed-c1d4-4f4f-93ca-16f4b6f1762f",
+    "name": "  ② First-Person",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Write in first-person narration.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "dd193663-d125-4184-9f3d-616afc9be83b",
+    "name": "  ③ Second-Person",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Write in second-person narration.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+# --- Group 4 — Perspective (enable exactly one) ---
+prompts.append({
+    "identifier": "0d89c4f3-b81d-45cd-bd46-91c0139d6207",
+    "name": "━‒ Group 4 — Perspective",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Enable exactly one perspective option below.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "e90a276e-4ddd-4c81-8369-7a63e9b134ae",
+    "name": "  ① Omniscient",
+    "system_prompt": False,
+    "enabled": True,
+    "marker": False,
+    "role": "system",
+    "content": "Use close-third narration with rotating character focus. Shape each passage through the subjective lens and internal thoughts of the character currently in focus, restricting perception and interpretation to what they directly witness or can reasonably infer. Switch focus characters only at scene breaks or clear narrative transitions.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "e2332a56-14d3-4fe8-8276-bfe12d3d1722",
+    "name": "  ② Character's POV",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Use limited narration from {{char}}'s perspective, as an unreliable narrator. Shape it through a subjective lens and internal thoughts, restricting perception and interpretation to what {{char}} directly witnesses or can reasonably infer.",
+    "injection_position": 0,
+    "injection_depth": 4,
+    "forbid_overrides": False,
+    "injection_order": 100,
+    "injection_trigger": []
+})
+
+prompts.append({
+    "identifier": "358e616f-1d28-4d82-8496-5ffa2886439a",
+    "name": "  ③ User's POV",
+    "system_prompt": False,
+    "enabled": False,
+    "marker": False,
+    "role": "system",
+    "content": "Use limited narration from {{user}}'s perspective, as an unreliable narrator. Shape it through a subjective lens and internal thoughts, restricting perception and interpretation to what {{user}} directly witnesses or can reasonably infer.",
     "injection_position": 0,
     "injection_depth": 4,
     "forbid_overrides": False,
@@ -691,7 +857,7 @@ prompts.append({
 # --- L3 — The Craft (REVISED) ---
 L3_CONTENT = """### The Craft — Prose Rules
 
-Read Tense, Narration, Perspective, and Length from the Constants Page. Write accordingly.
+Read Tense, Narration, and Perspective from the active preset toggles (Groups 2-4). Read Length from the Constants Page. Write accordingly.
 Let the most recent HTML state block's mood and scene context govern emotional register, sensory texture, and pacing — match without stating.
 
 ---
@@ -995,6 +1161,20 @@ order_100001 = {
         {"identifier": "f518e35f-0159-4556-bcd7-6bd20f793ef7", "enabled": False},
         # Constants Page template (disabled — reference only)
         {"identifier": "c0n5t000-0001-4000-a000-000000000001", "enabled": False},
+        # Group 2 — Tense
+        {"identifier": "2115804e-f068-4950-a6ce-b0e3b72ec18e", "enabled": True},
+        {"identifier": "dd546074-eb93-4017-aa3e-fa83dca48943", "enabled": True},
+        {"identifier": "86856525-9937-41b6-a30d-95150e298b3b", "enabled": False},
+        # Group 3 — Narration
+        {"identifier": "8bf73e40-b6f7-4da7-8e67-e368b5147673", "enabled": True},
+        {"identifier": "5d5e773f-e0a1-465d-b789-2b287792727a", "enabled": True},
+        {"identifier": "4de867ed-c1d4-4f4f-93ca-16f4b6f1762f", "enabled": False},
+        {"identifier": "dd193663-d125-4184-9f3d-616afc9be83b", "enabled": False},
+        # Group 4 — Perspective
+        {"identifier": "0d89c4f3-b81d-45cd-bd46-91c0139d6207", "enabled": True},
+        {"identifier": "e90a276e-4ddd-4c81-8369-7a63e9b134ae", "enabled": True},
+        {"identifier": "e2332a56-14d3-4fe8-8276-bfe12d3d1722", "enabled": False},
+        {"identifier": "358e616f-1d28-4d82-8496-5ffa2886439a", "enabled": False},
         # Group 9 — Divination (enable exactly one)
         {"identifier": "d1v1n000-0000-4000-a000-000000000000", "enabled": True},
         {"identifier": "d1v1n000-0001-4000-a000-000000000001", "enabled": False},
