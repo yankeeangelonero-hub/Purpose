@@ -479,10 +479,12 @@ GOOD: DOING: get the ship through the debris field → running damage calculatio
 
 **Layer 2 — Narrative Synopsis** (COLD — lives in character's lorebook entry)
 Story from their perspective. Past tense. Update at story beats — OOC confirmation required.
+Every synopsis must open with a `Last updated: Day NNN — HH:MM` line. When rewriting, update this timestamp to the current scene clock.
 
 **Layer 3 — Relationships** (COLD — lives in character's lorebook entry)
 - {{user}} entry: fine-grain texture — what's crossed, unspoken, owed.
 - NPC/faction entries: 2-4 sentences each.
+Each relationship entry ends with `(as of Day NNN)`. When rewriting, update to current scene clock.
 
 **Layer 4 — Key Moments** (COLD — lives in character's lorebook entry)
 Append-only. The only historical layer — what happened, permanently. OOC confirmation required.
@@ -495,6 +497,8 @@ If you cannot complete "I will [specific action]..." it doesn't belong here.
 When the character's disposition, relationships, or circumstances shift, rewrite the list to match who they are now. Drop stale observations. This is a living filter, not an archive.
 
 **One rule:** Key Moments record what happened — append only, never rewrite. Every other layer reflects what's true now — rewrite when it changes.
+
+**Timestamp mandate:** Every dossier write — whether append or rewrite — carries a timestamp derived from the current scene clock (Day NNN — HH:MM). Key Moments and PC Timeline entries already use this format per line. Synopsis carries a `Last updated:` header. Relationship entries carry `(as of Day NNN)` suffixes. Reputation entries carry `(as of Day NNN)` suffixes. If the scene clock is ambiguous, infer the best-fit datetime from environmental and narrative cues (time of day, elapsed time, celestial position, meal timing, shift changes, etc.).
 
 ## Update Rules
 
@@ -526,8 +530,8 @@ Max 5 registered characters. Removal: update phonebook entry, character's lorebo
 Read the persona card for who {{user}} is. Read the PC dossier lorebook entry for what {{user}} has done. When they conflict, the persona card defines the character — the dossier records the world's imperfect perception of them.
 
 **Demonstrated Traits** — Observable behaviors only. What someone watching would see. (HOT — lives in HTML state block)
-**World Reputation** — How factions/NPCs perceive {{user}}. May be wrong. (COLD — lives in PC lorebook entry)
-**Timeline** — Major actions + consequences. Append-only. OOC for additions. (COLD — lives in PC lorebook entry)
+**World Reputation** — How factions/NPCs perceive {{user}}. May be wrong. Each faction/NPC reputation entry ends with `(as of Day NNN)`. (COLD — lives in PC lorebook entry)
+**Timeline** — Major actions + consequences. Append-only. OOC for additions. Format: `Day NNN — HH:MM — action / consequence / delta`. (COLD — lives in PC lorebook entry)
 
 Never contains: internal motivation, emotional state, WANT/DOING/WEIGHT, speculation. Persona card overrides. Player can veto.
 
@@ -551,9 +555,9 @@ Where the world is about to break. Seams where faction objectives are colliding,
 **Story So Far**
 The narrative history. This is the record of what happened — not what might happen next. Two sections:
 
-COMPLETED ARCS — what the player experienced. Each arc: 2-3 sentences covering what happened, what changed, and what it set in motion.
+COMPLETED ARCS — what the player experienced. Each arc: `Day NNN–NNN:` 2-3 sentences covering what happened, what changed, and what it set in motion.
 
-WORLD EVENTS — what happened in the world regardless of whether the player was involved. Major battles, political shifts, faction victories and defeats, betrayals, alliances formed or broken. If Operation Spit Break happened while the player was hiding in Orb, it gets recorded here.
+WORLD EVENTS — what happened in the world regardless of whether the player was involved. Each event: `Day NNN — HH:MM:` what happened. Major battles, political shifts, faction victories and defeats, betrayals, alliances formed or broken. If Operation Spit Break happened while the player was hiding in Orb, it gets recorded here.
 
 The current arc and chapter plan also live in the World State Page. Story arcs is history. Chapter plan is the draft.
 
@@ -749,9 +753,9 @@ At structural moments (chapter close, timeskip, eval, or OOC command), pause nar
 
 **Exempt from compression:** Player-acquired special items, unresolved mysteries, key dialogue lines (preserve exact wording in quotes)
 
-**Append-only layers** (Key Moments, PC Timeline, Story Arcs): append new entries only. Never rewrite existing entries.
-**Rewritable layers** (Synopsis, Relationships, World State, Pressure Points, Factions): rewrite to reflect current truth.
-**Chapter Plan:** Redraw based on where the story actually landed.
+**Append-only layers** (Key Moments, PC Timeline, Story Arcs): append new entries only. Never rewrite existing entries. Each appended entry carries the scene clock timestamp from when the event occurred: `Day NNN — HH:MM`.
+**Rewritable layers** (Synopsis, Relationships, World State, Pressure Points, Factions): rewrite to reflect current truth. Each rewritten layer carries a `Last updated: Day NNN — HH:MM` header. Relationship entries carry `(as of Day NNN)` suffixes.
+**Chapter Plan:** Redraw based on where the story actually landed. Stamp with `Drafted: Day NNN — HH:MM`.
 
 After consolidation, the next HTML state block should note "Consolidation complete" in its Record summary."""
 
@@ -778,20 +782,20 @@ TunnelVision manages all long-term state through lorebook entries. A sidecar mod
 ## What Lives in TunnelVision Lorebook Entries
 
 **Per registered character** (keyword-triggered on character name):
-- Synopsis (Layer 2) — story from their perspective, past tense
-- Relationships (Layer 3) — {{user}} entry + NPC/faction entries
-- Key Moments (Layer 4) — append-only historical record
+- Synopsis (Layer 2) — story from their perspective, past tense. Opens with `Last updated: Day NNN — HH:MM`.
+- Relationships (Layer 3) — {{user}} entry + NPC/faction entries. Each suffixed `(as of Day NNN)`.
+- Key Moments (Layer 4) — append-only historical record. Each entry: `Day NNN — HH:MM — anchor / event / delta`.
 
 **World State Page** (always-on):
-- Active Factions — name, objective, resources, stance toward {{user}}
-- World State — macro-level reality
-- Pressure Points — where the world is about to break
-- Story Arcs — completed arcs + world events
-- Chapter Plan — the current draft
+- Active Factions — name, objective, resources, stance toward {{user}}. Section header: `Last updated: Day NNN — HH:MM`.
+- World State — macro-level reality. Header: `Last updated: Day NNN — HH:MM`.
+- Pressure Points — where the world is about to break. Header: `Last updated: Day NNN — HH:MM`.
+- Story Arcs — completed arcs (timestamped day ranges) + world events (timestamped per event)
+- Chapter Plan — the current draft. Header: `Drafted: Day NNN — HH:MM`.
 
 **Player Character** (always-on):
-- Timeline — major actions + consequences, append-only
-- Reputation — how factions/NPCs perceive {{user}}
+- Timeline — major actions + consequences, append-only. Each entry: `Day NNN — HH:MM — action / consequence / delta`.
+- Reputation — how factions/NPCs perceive {{user}}. Each entry suffixed `(as of Day NNN)`.
 
 **Structural:**
 - Character Registry / Phonebook — who is registered, which slot
@@ -999,12 +1003,12 @@ Reputation: [only if shifted]
 
 ---
 
-**Record:**
+**Record:** [Day NNN — HH:MM]
 Movement: [A → B, or: static]
 Deltas: [items gained/lost/transferred, resources changed — or: none]
 Relationship: [who shifted, direction, cause — or: none]
 Unspoken: [information characters noticed but haven't said aloud, tagged (unspoken) — or: none]
-Pending: [cold-state changes flagged for next consolidation — e.g. "Tifa synopsis needs update", "new key moment for Barret" — or: none]
+Pending: [cold-state changes flagged for next consolidation — e.g. "Tifa synopsis needs update (Day 003 — 14:30)", "new key moment for Barret (Day 003 — 14:30)" — or: none]
 Summary: [3 sentences max — what happened this turn, factual, not interpretation]
 
 **Next:** [forward-looking intent — must match Plan from deduction]
@@ -1022,6 +1026,8 @@ Summary: [3 sentences max — what happened this turn, factual, not interpretati
 4. **The model reads its own prior state block.** The source of truth for hot state is the HTML block in the most recent message in chat history. Not a variable store, not an injection — the actual text the model wrote last turn.
 
 5. **The block is visible in chat.** The state block renders as a collapsible panel. The user can expand any message's state block to inspect it and catch corruption. Old state blocks are NOT stripped — they remain in chat history as a permanent record. The Record sections in older messages are the data source for consolidation.
+
+6. **Every Record carries a timestamp.** The Record header includes the scene clock at the moment the turn concludes: `**Record:** [Day NNN — HH:MM]`. Advance the clock logically each turn — dialogue-heavy scenes may span minutes, travel spans hours, rest spans the gap to next activity. If the exact time is ambiguous, infer from context (lighting, meals, fatigue, celestial cues, shift schedules). Never leave the clock unchanged for 3+ consecutive turns unless the scene genuinely spans under a minute.
 
 ## System 2: TunnelVision Lorebook
 
@@ -1097,6 +1103,8 @@ ANCHOR_CONTENT = """### The Rules That Drift
 9. CONDITIONAL DISPLAY. Only print a character's hot state block if they're in scene or their state changed. Don't print empty slots. Don't print the full noticed details list every turn — only entries that fired or shifted.
 
 10. THE RECORD IS A HISTORICAL ARTIFACT. Movement, deltas, relationship shifts, unspoken information, summary. Every turn. This is your insurance policy — if the model loses context, the Record sections in recent messages reconstruct what happened.
+
+11. TIMESTAMPS ARE MANDATORY. Every Record carries `[Day NNN — HH:MM]`. Every dossier write — synopsis, relationship, key moment, timeline, reputation, world state section — carries a timestamp. Advance the scene clock logically each turn. If the time is ambiguous, infer from environmental and narrative cues. Never skip timestamps on lorebook writes.
 
 ### Turn Sequence
 

@@ -163,10 +163,10 @@ Use TunnelVision_Search to retrieve current lorebook entries for all registered 
 
 **Exempt from compression:** Player-acquired special items, unresolved mysteries, key dialogue (preserve exact wording in quotes).
 
-**Append-only layers** (Key Moments, PC Timeline, Story Arcs): append new entries only.
-**Rewritable layers** (Synopsis, Relationships, World State, Pressure Points, Factions): rewrite to reflect current truth.
+**Append-only layers** (Key Moments, PC Timeline, Story Arcs): append new entries only. Each appended entry carries its scene clock timestamp: `Day NNN — HH:MM`.
+**Rewritable layers** (Synopsis, Relationships, World State, Pressure Points, Factions): rewrite to reflect current truth. Each rewritten layer carries `Last updated: Day NNN — HH:MM`. Relationship entries carry `(as of Day NNN)` suffixes.
 
-Output a summary of what was updated. The next HTML state block should note "Consolidation complete" in its Record summary."""
+Output a summary of what was updated, including the timestamp range covered by this consolidation. The next HTML state block should note "Consolidation complete" in its Record summary."""
 )
 
 # ============================================================
@@ -246,10 +246,10 @@ entries["3"] = make_entry(
 - Dangling setups: loaded noticed details that never fired? Threads seeded but never advanced?
 - Ally rapport audit: for each ally/significant NPC, list every interaction as FRICTION or COOPERATION. Count ratio. Is the trajectory justified given tone rules? Propose relationship update if warranted.
 
-5. **Full Consolidation:** Use TunnelVision_Search to retrieve current entries, then push all accumulated changes via TunnelVision_Update:
-- Character dossiers: update synopsis, relationships, append key moments
-- PC dossier: append timeline, update reputation
-- World State Page: update factions, world state, pressure, append chapter summary to story arcs
+5. **Full Consolidation:** Use TunnelVision_Search to retrieve current entries, then push all accumulated changes via TunnelVision_Update. All writes carry timestamps from the current scene clock:
+- Character dossiers: update synopsis (`Last updated: Day NNN — HH:MM`), relationships (`(as of Day NNN)`), append key moments (`Day NNN — HH:MM`)
+- PC dossier: append timeline (`Day NNN — HH:MM`), update reputation (`(as of Day NNN)`)
+- World State Page: update factions, world state, pressure (all `Last updated: Day NNN — HH:MM`), append chapter summary to story arcs (with day range)
 - Fix any flagged dossier drift from the health check
 
 Output all of the above as an OOC block. Wait for player to review and confirm.
@@ -267,7 +267,7 @@ After player confirms, declare the new chapter:
 - Tone rules: [3 fresh behavioral rules for this chapter — update Constants Page via TunnelVision_Update]
 - Voice commitment: [1-2 specific voice behaviors to enforce this chapter]
 
-7. **Update World State Page** via TunnelVision_Update: new chapter plan, updated chapter number, arc if changed. Update Constants Page tone rules if refreshed.
+7. **Update World State Page** via TunnelVision_Update: new chapter plan (`Drafted: Day NNN — HH:MM`), updated chapter number, arc if changed. Update Constants Page tone rules if refreshed.
 
 8. **Write the first prose of the new chapter** with a full deduction and HTML state block."""
 )
@@ -345,6 +345,7 @@ Read the last 10-15 messages and compare against stored state:
 28. Noticed details formatted correctly ("I will [behavior] because [observation]")?
 29. Phonebook consistent with which characters have lorebook entries?
 30. Tone rules = exactly 3 concrete behavioral rules?
+31. **Timestamp integrity** — every synopsis has `Last updated:` header? Every relationship entry has `(as of Day NNN)` suffix? Every key moment and PC timeline entry has `Day NNN — HH:MM`? World State Page sections have `Last updated:` headers? Chapter plan has `Drafted:` header? Record sections in recent state blocks have timestamps? Flag any missing or stale timestamps.
 
 **OUTPUT FORMAT**
 
@@ -353,7 +354,7 @@ Read the last 10-15 messages and compare against stored state:
 Hot State (HTML Block): X/X pass
 Cold State (Lorebook): X/X pass
 Cross-reference: X/X pass
-Structural: X/X pass
+Structural + Timestamps: X/X pass
 
 ISSUES FOUND:
 - [CHECK #] [SEVERITY: drift/stale/missing/mismatch] — [what's wrong] — [recommended fix]
@@ -413,10 +414,10 @@ Quick audit:
 
 **PHASE 4 — PUSH TO LOREBOOK**
 
-Use TunnelVision_Update to push all advanced state to lorebook entries:
-- Character dossiers: updated synopsis, relationships, new key moments
-- PC dossier: timeline entries, reputation changes
-- World State Page: updated factions, world state, pressure, story arcs (append world events), thread state, chapter plan if trajectory changed
+Use TunnelVision_Update to push all advanced state to lorebook entries. All writes carry timestamps reflecting the post-skip scene clock:
+- Character dossiers: updated synopsis (`Last updated: Day NNN — HH:MM`), relationships (`(as of Day NNN)`), new key moments (`Day NNN — HH:MM`)
+- PC dossier: timeline entries (`Day NNN — HH:MM`), reputation changes (`(as of Day NNN)`)
+- World State Page: updated factions, world state, pressure (all `Last updated: Day NNN — HH:MM`), story arcs (append world events with timestamps), chapter plan (`Drafted: Day NNN — HH:MM`) if trajectory changed
 
 **PHASE 5 — THE LANDING SCENE**
 
@@ -536,8 +537,8 @@ The player may have named characters to register, or you should propose the most
 
 Use TunnelVision_Remember to create these lorebook entries:
 - **Phonebook** — all registered characters with slot numbers
-- **One dossier per character** (keyword: character name) — Synopsis, Relationships, Key Moments per L0 format
-- **PC Dossier** — Timeline + Reputation
+- **One dossier per character** (keyword: character name) — Synopsis (with `Last updated:` timestamp), Relationships (with `(as of Day NNN)` suffixes), Key Moments (with `Day NNN — HH:MM` per entry) per L0 format
+- **PC Dossier** — Timeline (with `Day NNN — HH:MM` per entry) + Reputation (with `(as of Day NNN)` suffixes)
 - **World State Page** (if not created in Phase 2) — Factions, World State, Pressure Points, Story Arcs, Chapter Plan
 
 Then list all registered characters with their WANT/DOING/WEIGHT. Ask the player to confirm.
@@ -572,7 +573,7 @@ Traits: [from persona card, reframed as observable behaviors]
 
 ---
 
-**Record:**
+**Record:** [Day 001 — HH:MM]
 Movement: [starting location]
 Deltas: none
 Relationship: none
@@ -813,7 +814,8 @@ After climax and afterglow:
 - Add to DISCOVERED if new physical specifics found
 
 **Content format** (single entry, concise — under 300 words):
-ENCOUNTERS: [count]; FIRST: [day context who-initiated]; DYNAMIC: [who-leads how]; RESPONDS: [top 3 triggers]; SEEKS: [core desire]; DISCOVERED: [top 3-4 physical specifics]; EVOLUTION: [one sentence how it differed from last time]
+Last updated: Day NNN — HH:MM
+ENCOUNTERS: [count]; FIRST: [Day NNN — HH:MM, context, who-initiated]; LATEST: [Day NNN — HH:MM]; DYNAMIC: [who-leads how]; RESPONDS: [top 3 triggers]; SEEKS: [core desire]; DISCOVERED: [top 3-4 physical specifics]; EVOLUTION: [one sentence how it differed from last time]
 
 ## No Bookkeeping During Intimacy
 
