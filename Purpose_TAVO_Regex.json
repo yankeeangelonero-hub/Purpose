@@ -1,0 +1,66 @@
+[
+  {
+    "scriptName": "Strip Deduction Block",
+    "findRegex": "/---DEDUCTION---[\\s\\S]*?---END DEDUCTION---/gs",
+    "replaceString": "",
+    "trimStrings": [],
+    "placement": [
+      2
+    ],
+    "disabled": false,
+    "markdownOnly": false,
+    "promptOnly": false,
+    "runOnEdit": true,
+    "substituteRegex": false,
+    "minDepth": null,
+    "maxDepth": null
+  },
+  {
+    "scriptName": "Strip Report Block",
+    "findRegex": "/<report>[\\s\\S]*?<\\/report>/gs",
+    "replaceString": "",
+    "trimStrings": [],
+    "placement": [
+      2
+    ],
+    "disabled": false,
+    "markdownOnly": false,
+    "promptOnly": false,
+    "runOnEdit": true,
+    "substituteRegex": false,
+    "minDepth": null,
+    "maxDepth": null
+  },
+  {
+    "scriptName": "Strip Audit Block",
+    "findRegex": "/---AUDIT---[\\s\\S]*?---END AUDIT---/gs",
+    "replaceString": "",
+    "trimStrings": [],
+    "placement": [
+      2
+    ],
+    "disabled": false,
+    "markdownOnly": false,
+    "promptOnly": false,
+    "runOnEdit": true,
+    "substituteRegex": false,
+    "minDepth": null,
+    "maxDepth": null
+  },
+  {
+    "scriptName": "Collapse TAVO Blocks",
+    "findRegex": "/<!-- TAVO:\\s*(?:CREATE|UPDATE|DELETE)\\s*-->[\\s\\S]*?<!-- \\/TAVO -->/gs",
+    "replaceString": "<details><summary>📦 TAVO Update</summary>\n\n$&\n\n</details>",
+    "trimStrings": [],
+    "placement": [
+      2
+    ],
+    "disabled": false,
+    "markdownOnly": false,
+    "promptOnly": false,
+    "runOnEdit": true,
+    "substituteRegex": false,
+    "minDepth": null,
+    "maxDepth": null
+  }
+]
