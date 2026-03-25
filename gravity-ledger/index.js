@@ -12,13 +12,12 @@
 
 import { init as initLedger, append, getBookName } from './ledger-store.js';
 import { initSnapshots, computeCurrentState, createSnapshot } from './snapshot-mgr.js';
-import { validateBatch } from './consistency.js';
+import { validateBatch, formatErrors } from './consistency.js';
 import { computeState } from './state-compute.js';
 import { renderAll } from './state-view.js';
 import {
     extractLedgerBlock,
     getReinforcement,
-    getValidationErrorMessage,
     stripLedgerBlock,
 } from './regex-intercept.js';
 import { processOOC } from './ooc-handler.js';
@@ -98,18 +97,18 @@ async function onMessageReceived(messageData) {
         return;
     }
 
-    // Validate transactions against current state
-    const validation = validateBatch(_currentState, extraction.transactions, {
-        turnNumber: _turnCounter,
-    });
+    // Validate transaction FORMAT only (spelling, structure, required fields).
+    // Gameplay rules (constraint counts, state machine transitions, etc.)
+    // are the LLM's responsibility — audited during OOC: eval.
+    const validation = validateBatch(extraction.transactions);
 
-    if (validation.blocking.length > 0) {
-        // Reject — inject error message
-        _pendingInjection = getValidationErrorMessage([...validation.blocking, ...validation.advisory]);
+    if (!validation.valid) {
+        // Reject — format errors only
+        _pendingInjection = formatErrors(validation.errors);
         return;
     }
 
-    // All valid — commit to ledger
+    // Format valid — commit to ledger
     try {
         const committed = await append(extraction.transactions);
 
@@ -119,13 +118,8 @@ async function onMessageReceived(messageData) {
         // Update lorebook entries
         await renderAll(bookName, _currentState);
 
-        // Generate reinforcement (advisory warnings or format nudges)
-        const advisoryMsg = validation.advisory.length > 0
-            ? getValidationErrorMessage(validation.advisory)
-            : null;
-        const formatMsg = getReinforcement(extraction, _turnCounter);
-
-        _pendingInjection = [advisoryMsg, formatMsg].filter(Boolean).join('\n') || null;
+        // Generate format reinforcement (drift nudges only — no gameplay warnings)
+        _pendingInjection = getReinforcement(extraction, _turnCounter);
 
         // Auto-snapshot check
         if (_turnCounter % _autoSnapshotInterval === 0) {

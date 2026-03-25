@@ -1,8 +1,13 @@
 /**
- * state-machine.js — State machine definitions, transition guards, strict enforcement.
+ * state-machine.js — State machine definitions and reference data.
  *
- * Every entity type with a lifecycle gets a state machine. Transitions are validated
- * before any ledger commit. Invalid transitions are rejected with actionable errors.
+ * Defines the valid states and transitions for each entity lifecycle.
+ * These are NOT enforced by the extension — gameplay rules are the LLM's
+ * responsibility, audited during OOC: eval. This module serves as:
+ *
+ * 1. Reference documentation for the state machines
+ * 2. Utility functions the LLM-facing eval can use to describe valid transitions
+ * 3. A library the prompt layer references when explaining rules to the LLM
  */
 
 // ─── Character Tier ────────────────────────────────────────────────────────────

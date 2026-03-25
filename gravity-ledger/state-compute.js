@@ -143,6 +143,21 @@ function applyTransaction(state, tx) {
             break;
         }
 
+        case 'AMEND': {
+            // Amend rewrites history. The correction contains a replacement transaction
+            // that supersedes the original. During state computation, we track amendments
+            // and skip the original tx when rebuilding. The AMEND itself carries the
+            // corrected data that gets applied instead.
+            //
+            // d.target_tx: the tx id being corrected
+            // d.correction: the replacement transaction (same shape as a normal tx)
+            // d.reason: why the amendment was needed
+            //
+            // The correction is applied in place of the original during computeState().
+            // This is handled in computeState(), not here — AMEND is a meta-operation.
+            break;
+        }
+
         // SNAPSHOT and ROLLBACK are handled by snapshot-mgr, not here
         default:
             break;
@@ -154,6 +169,9 @@ function applyTransaction(state, tx) {
 
 /**
  * Compute full state from a snapshot (or empty state) plus transactions.
+ * Handles AMEND operations by collecting amendments first, then applying
+ * corrected versions in place of originals during replay.
+ *
  * @param {ComputedState|null} snapshot - Starting state (null = empty)
  * @param {Array} transactions - Transactions to apply in order
  * @returns {ComputedState}
@@ -161,10 +179,26 @@ function applyTransaction(state, tx) {
 function computeState(snapshot, transactions) {
     const state = snapshot ? structuredClone(snapshot) : createEmptyState();
 
+    // First pass: collect all amendments (maps target_tx → correction)
+    const amendments = new Map();
+    for (const tx of transactions) {
+        if (tx.op === 'AMEND' && tx.d?.target_tx != null && tx.d?.correction) {
+            amendments.set(tx.d.target_tx, tx.d.correction);
+        }
+    }
+
+    // Second pass: apply transactions, substituting amendments
     for (const tx of transactions) {
         // Skip meta transactions
-        if (tx.op === 'SNAP' || tx.op === 'ROLL') continue;
-        applyTransaction(state, tx);
+        if (tx.op === 'SNAP' || tx.op === 'ROLL' || tx.op === 'AMEND') continue;
+
+        // If this transaction was amended, apply the correction instead
+        if (amendments.has(tx.tx)) {
+            const corrected = amendments.get(tx.tx);
+            applyTransaction(state, { ...corrected, tx: tx.tx });
+        } else {
+            applyTransaction(state, tx);
+        }
     }
 
     return state;

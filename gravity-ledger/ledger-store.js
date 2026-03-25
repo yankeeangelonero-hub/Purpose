@@ -199,6 +199,40 @@ async function getTransactionsSince(sinceTxId) {
 }
 
 /**
+ * Get transactions filtered by entity id.
+ * Used by eval to retrieve the full history of a specific entity.
+ * @param {string} entityId - The entity id to filter by
+ * @returns {Promise<Array>}
+ */
+async function getTransactionsForEntity(entityId) {
+    const all = await getAllTransactions();
+    return all.filter(tx =>
+        tx.id === entityId ||
+        // Also match AMEND transactions that target this entity's transactions
+        (tx.op === 'AMEND' && tx.d?.correction?.id === entityId)
+    );
+}
+
+/**
+ * Get transactions within a time range (by in-game timestamp).
+ * Used by eval to retrieve history for a specific period.
+ * @param {string} fromTimestamp - e.g. "[Day 1 — 00:00]"
+ * @param {string} [toTimestamp] - e.g. "[Day 3 — 12:00]", defaults to latest
+ * @returns {Promise<Array>}
+ */
+async function getTransactionsInRange(fromTimestamp, toTimestamp) {
+    const all = await getAllTransactions();
+    // Simple string comparison works for "[Day N — HH:MM]" format
+    // because Day number and time are zero-padded in practice
+    return all.filter(tx => {
+        if (!tx.t) return false;
+        if (fromTimestamp && tx.t < fromTimestamp) return false;
+        if (toTimestamp && tx.t > toTimestamp) return false;
+        return true;
+    });
+}
+
+/**
  * Get the current transaction counter.
  * @returns {number}
  */
@@ -219,6 +253,8 @@ export {
     append,
     getAllTransactions,
     getTransactionsSince,
+    getTransactionsForEntity,
+    getTransactionsInRange,
     getCurrentTxId,
     getBookName,
     parseTransactions,
