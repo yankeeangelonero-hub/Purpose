@@ -21,6 +21,7 @@ import {
     stripLedgerBlock,
 } from './regex-intercept.js';
 import { processOOC } from './ooc-handler.js';
+import { createPanel, updatePanel, loadStyles } from './ui-panel.js';
 
 const MODULE_NAME = 'gravity-ledger';
 const LOG_PREFIX = '[GravityLedger]';
@@ -47,6 +48,7 @@ async function initialize() {
         await initSnapshots(bookName);
         _currentState = await computeCurrentState(bookName);
         _initialized = true;
+        updatePanel(_currentState, _turnCounter);
         console.log(`${LOG_PREFIX} Initialized. Book: ${bookName}, Last TX: ${_currentState.lastTxId}`);
     } catch (err) {
         console.error(`${LOG_PREFIX} Init failed:`, err);
@@ -118,6 +120,9 @@ async function onMessageReceived(messageData) {
         // Update lorebook entries
         await renderAll(bookName, _currentState);
 
+        // Update front-end panel
+        updatePanel(_currentState, _turnCounter);
+
         // Generate format reinforcement (drift nudges only — no gameplay warnings)
         _pendingInjection = getReinforcement(extraction, _turnCounter);
 
@@ -150,6 +155,9 @@ async function onUserMessage(messageData) {
     const result = await processOOC(messageData.mes, bookName);
     if (result.handled && result.injection) {
         _pendingInjection = result.injection;
+        // Refresh state + panel after structural OOC commands (rollback, consolidate)
+        _currentState = await computeCurrentState(bookName);
+        updatePanel(_currentState, _turnCounter);
     }
 }
 
@@ -178,9 +186,12 @@ function registerExtension() {
         return;
     }
 
-    const { eventSource, event_types } = context;
+    // Load UI
+    const extensionPath = `scripts/extensions/third-party/${MODULE_NAME}`;
+    loadStyles(extensionPath);
+    createPanel();
 
-    if (eventSource && event_types) {
+    const { eventSource, event_types } = context;
         // Hook into message events
         eventSource.on(event_types.MESSAGE_RECEIVED, onMessageReceived);
         eventSource.on(event_types.USER_MESSAGE_RENDERED, onUserMessage);
