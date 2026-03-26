@@ -15,13 +15,31 @@ const ARCHIVE_PREFIX = 'Gravity_Ledger_Archive_';
 let _bookName = null;
 let _txCounter = 0;
 let _cachedTransactions = null; // In-memory cache of active partition
+let _currentChatId = null;
+
+/**
+ * Reset the ledger store state. Called when switching chats.
+ */
+function reset() {
+    _bookName = null;
+    _txCounter = 0;
+    _cachedTransactions = null;
+    _currentChatId = null;
+}
 
 /**
  * Initialize the ledger store. Ensures the lorebook and active partition exist.
+ * @param {string} [chatId] - The chat ID to scope the ledger to
+ * @param {string} [explicitBookName] - Load a specific book by name (overrides chatId)
  * @returns {Promise<void>}
  */
-async function init() {
-    _bookName = await ensureLedgerBook();
+async function init(chatId, explicitBookName) {
+    // If switching to a different chat, reset first
+    if (chatId && _currentChatId && chatId !== _currentChatId) {
+        reset();
+    }
+    _currentChatId = chatId || null;
+    _bookName = explicitBookName || await ensureLedgerBook(chatId);
     const active = await findEntryByComment(_bookName, ACTIVE_COMMENT);
     if (!active) {
         await createEntry(_bookName, {
@@ -250,6 +268,7 @@ function getBookName() {
 
 export {
     init,
+    reset,
     append,
     getAllTransactions,
     getTransactionsSince,

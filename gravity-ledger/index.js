@@ -4,13 +4,9 @@
  * A state machine and append-only ledger that replaces TunnelVision for Gravity v10.
  * Operates entirely through regex interception and keyword-triggered lorebook injection.
  * Zero tool calls — all writes via ---LEDGER--- block extraction, all reads via lorebook.
- *
- * Event hooks:
- *   MESSAGE_RECEIVED  → Extract ledger block, validate, persist, update state view
- *   USER_MESSAGE_SENT → Check for OOC commands, dispatch structural operations
  */
 
-import { init as initLedger, append, getBookName } from './ledger-store.js';
+import { init as initLedger, reset as resetLedger, append, getBookName } from './ledger-store.js';
 import { initSnapshots, computeCurrentState, createSnapshot } from './snapshot-mgr.js';
 import { validateBatch, formatErrors } from './consistency.js';
 import { computeState } from './state-compute.js';
@@ -18,10 +14,9 @@ import { renderAll } from './state-view.js';
 import {
     extractLedgerBlock,
     getReinforcement,
-    stripLedgerBlock,
 } from './regex-intercept.js';
 import { processOOC } from './ooc-handler.js';
-import { createPanel, updatePanel, loadStyles } from './ui-panel.js';
+import { createPanel, updatePanel, setCallbacks, setBookName } from './ui-panel.js';
 
 const MODULE_NAME = 'gravity-ledger';
 const LOG_PREFIX = '[GravityLedger]';
@@ -31,205 +26,222 @@ const LOG_PREFIX = '[GravityLedger]';
 let _initialized = false;
 let _currentState = null;
 let _turnCounter = 0;
-let _autoSnapshotInterval = 15; // Snapshot every N turns
-let _pendingInjection = null; // Message to inject into next prompt context
+let _autoSnapshotInterval = 15;
+let _pendingInjection = null;
+let _currentChatId = null;
+
+// ─── Helpers ───────────────────────────────────────────────────────────────────
+
+function getChatId() {
+    const context = SillyTavern.getContext();
+    return context.chatId || null;
+}
+
+/**
+ * Attach a lorebook to the current chat so ST injects its entries into prompts.
+ * Sets chat_metadata['world_info'] and saves.
+ */
+async function attachBookToChat(bookName) {
+    const context = SillyTavern.getContext();
+    const { chatMetadata, saveMetadata } = context;
+    if (!chatMetadata || !bookName) return;
+
+    if (chatMetadata['world_info'] !== bookName) {
+        chatMetadata['world_info'] = bookName;
+        await saveMetadata();
+        $('.chat_lorebook_button').addClass('world_set');
+        console.log(`${LOG_PREFIX} Attached lorebook "${bookName}" to chat.`);
+    }
+}
 
 // ─── Initialization ────────────────────────────────────────────────────────────
 
-/**
- * Initialize the extension. Called once on load.
- */
-async function initialize() {
-    if (_initialized) return;
+async function initialize(force = false) {
+    const chatId = getChatId();
+
+    if (_initialized && !force && chatId === _currentChatId) return;
+
+    _initialized = false;
+    _currentState = null;
+    _turnCounter = 0;
+    _pendingInjection = null;
+
+    if (!chatId) {
+        console.log(`${LOG_PREFIX} No active chat.`);
+        updatePanel(null, 0);
+        return;
+    }
 
     try {
-        await initLedger();
+        _currentChatId = chatId;
+        await initLedger(chatId);
         const bookName = getBookName();
         await initSnapshots(bookName);
         _currentState = await computeCurrentState(bookName);
         _initialized = true;
+        await attachBookToChat(bookName);
+        setBookName(bookName);
         updatePanel(_currentState, _turnCounter);
-        console.log(`${LOG_PREFIX} Initialized. Book: ${bookName}, Last TX: ${_currentState.lastTxId}`);
+        console.log(`${LOG_PREFIX} Initialized for chat ${chatId}. Book: ${bookName}`);
     } catch (err) {
         console.error(`${LOG_PREFIX} Init failed:`, err);
+        setBookName(null);
     }
+}
+
+/**
+ * Load a specific lorebook by name (called from UI).
+ * @param {string} bookName
+ */
+async function loadBook(bookName) {
+    resetLedger();
+    _initialized = false;
+    _currentState = null;
+    _turnCounter = 0;
+    _pendingInjection = null;
+
+    try {
+        await initLedger(null, bookName);
+        await initSnapshots(bookName);
+        _currentState = await computeCurrentState(bookName);
+        _initialized = true;
+        await attachBookToChat(bookName);
+        setBookName(bookName);
+        updatePanel(_currentState, _turnCounter);
+        console.log(`${LOG_PREFIX} Loaded book: ${bookName}`);
+    } catch (err) {
+        console.error(`${LOG_PREFIX} Load book failed:`, err);
+        setBookName(null);
+    }
+}
+
+/**
+ * Create and switch to a new lorebook (called from UI).
+ * @param {string} bookName
+ */
+async function newBook(bookName) {
+    await loadBook(bookName);
+}
+
+async function onChatChanged() {
+    const newChatId = getChatId();
+    console.log(`${LOG_PREFIX} Chat changed → ${newChatId || '(none)'}`);
+    resetLedger();
+    await initialize(true);
 }
 
 // ─── Message Handlers ──────────────────────────────────────────────────────────
 
-/**
- * Handle an incoming LLM response. Extract ledger block, validate, persist.
- * Called on MESSAGE_RECEIVED event.
- *
- * @param {Object} messageData - SillyTavern message data
- */
-async function onMessageReceived(messageData) {
+async function onMessageReceived(messageId) {
     if (!_initialized) await initialize();
-    if (!messageData?.mes) return;
+
+    // MESSAGE_RECEIVED passes the chat index, not the message object
+    const context = SillyTavern.getContext();
+    const message = context.chat?.[messageId];
+    if (!message?.mes) return;
 
     const bookName = getBookName();
     if (!bookName) return;
 
     _turnCounter++;
 
-    // Extract ledger block from response
-    const extraction = extractLedgerBlock(messageData.mes);
+    const extraction = extractLedgerBlock(message.mes);
 
-    // Strip ledger block from displayed message
     if (extraction.found) {
-        messageData.mes = extraction.cleanedMessage;
+        message.mes = extraction.cleanedMessage;
     }
 
-    // Handle extraction results
     if (!extraction.found) {
-        // No ledger block — generate reinforcement
         _pendingInjection = getReinforcement(extraction, _turnCounter);
         return;
     }
 
     if (extraction.error) {
-        // Found but malformed
         _pendingInjection = getReinforcement(extraction, _turnCounter);
         return;
     }
 
     if (!extraction.transactions || extraction.transactions.length === 0) {
-        // Empty ledger block — valid, no-op turn
         _pendingInjection = getReinforcement(extraction, _turnCounter);
         return;
     }
 
-    // Validate transaction FORMAT only (spelling, structure, required fields).
-    // Gameplay rules (constraint counts, state machine transitions, etc.)
-    // are the LLM's responsibility — audited during OOC: eval.
     const validation = validateBatch(extraction.transactions);
 
     if (!validation.valid) {
-        // Reject — format errors only
         _pendingInjection = formatErrors(validation.errors);
         return;
     }
 
-    // Format valid — commit to ledger
     try {
         const committed = await append(extraction.transactions);
-
-        // Update computed state
         _currentState = computeState(_currentState, committed);
-
-        // Update lorebook entries
         await renderAll(bookName, _currentState);
-
-        // Update front-end panel
         updatePanel(_currentState, _turnCounter);
-
-        // Generate format reinforcement (drift nudges only — no gameplay warnings)
         _pendingInjection = getReinforcement(extraction, _turnCounter);
 
-        // Auto-snapshot check
         if (_turnCounter % _autoSnapshotInterval === 0) {
             await createSnapshot(bookName, _currentState, `Auto-snapshot turn ${_turnCounter}`);
-            console.log(`${LOG_PREFIX} Auto-snapshot at turn ${_turnCounter}`);
         }
 
-        console.log(`${LOG_PREFIX} Committed ${committed.length} transactions. Turn ${_turnCounter}.`);
+        console.log(`${LOG_PREFIX} Committed ${committed.length} TX. Turn ${_turnCounter}.`);
     } catch (err) {
         console.error(`${LOG_PREFIX} Commit failed:`, err);
-        _pendingInjection = `[LEDGER ERROR: Commit failed — ${err.message}. Transactions not saved. Resubmit.]`;
+        _pendingInjection = `[LEDGER ERROR: Commit failed — ${err.message}. Resubmit.]`;
     }
 }
 
-/**
- * Handle a player message. Check for OOC commands.
- * Called on USER_MESSAGE_SENT event.
- *
- * @param {Object} messageData - SillyTavern message data
- */
-async function onUserMessage(messageData) {
+async function onUserMessage(messageId) {
     if (!_initialized) await initialize();
-    if (!messageData?.mes) return;
+
+    const context = SillyTavern.getContext();
+    const message = context.chat?.[messageId];
+    if (!message?.mes) return;
 
     const bookName = getBookName();
     if (!bookName) return;
 
-    const result = await processOOC(messageData.mes, bookName);
+    const result = await processOOC(message.mes, bookName);
     if (result.handled && result.injection) {
         _pendingInjection = result.injection;
-        // Refresh state + panel after structural OOC commands (rollback, consolidate)
         _currentState = await computeCurrentState(bookName);
         updatePanel(_currentState, _turnCounter);
     }
 }
 
-/**
- * Inject pending messages into the prompt context.
- * Called on GENERATE_BEFORE_COMBINE or similar pre-generation event.
- *
- * @returns {string|null} Text to inject, or null
- */
 function getPendingInjection() {
     const injection = _pendingInjection;
     _pendingInjection = null;
     return injection;
 }
 
-// ─── SillyTavern Extension Registration ────────────────────────────────────────
+// ─── Entry Point ───────────────────────────────────────────────────────────────
 
-/**
- * Register the extension with SillyTavern's event system.
- * This is the entry point called by SillyTavern when loading the extension.
- */
-function registerExtension() {
-    const context = window.SillyTavern?.getContext?.();
-    if (!context) {
-        console.warn(`${LOG_PREFIX} SillyTavern context not available. Running in standalone mode.`);
-        return;
-    }
-
-    // Load UI
-    const extensionPath = `scripts/extensions/third-party/${MODULE_NAME}`;
-    loadStyles(extensionPath);
-    createPanel();
-
+(function init() {
+    const context = SillyTavern.getContext();
     const { eventSource, event_types } = context;
-        // Hook into message events
-        eventSource.on(event_types.MESSAGE_RECEIVED, onMessageReceived);
-        eventSource.on(event_types.USER_MESSAGE_RENDERED, onUserMessage);
 
-        // Hook into prompt generation to inject pending messages
-        eventSource.on(event_types.GENERATION_STARTED, () => {
-            const injection = getPendingInjection();
-            if (injection) {
-                // Inject as a system message in the prompt
-                // The exact mechanism depends on SillyTavern's API
-                context.injectSystemMessage?.(injection) ||
-                console.log(`${LOG_PREFIX} Would inject: ${injection.substring(0, 100)}...`);
-            }
-        });
+    // Inject UI panel
+    createPanel();
+    setCallbacks({ onLoadBook: loadBook, onNewBook: newBook });
 
-        console.log(`${LOG_PREFIX} Extension registered. Event hooks active.`);
-    }
+    // Chat switching
+    eventSource.on(event_types.CHAT_CHANGED, onChatChanged);
 
-    // Initialize the ledger store
-    initialize().catch(err => console.error(`${LOG_PREFIX} Init error:`, err));
-}
+    // Message events
+    eventSource.on(event_types.MESSAGE_RECEIVED, onMessageReceived);
+    eventSource.on(event_types.USER_MESSAGE_RENDERED, onUserMessage);
 
-// ─── Exports ───────────────────────────────────────────────────────────────────
-
-// For SillyTavern extension loading
-if (typeof jQuery !== 'undefined') {
-    jQuery(async () => {
-        registerExtension();
+    // Prompt injection
+    eventSource.on(event_types.GENERATION_STARTED, () => {
+        const injection = getPendingInjection();
+        if (injection) {
+            console.log(`${LOG_PREFIX} Injecting: ${injection.substring(0, 100)}...`);
+        }
     });
-}
 
-export {
-    initialize,
-    onMessageReceived,
-    onUserMessage,
-    getPendingInjection,
-    registerExtension,
-    // Expose for testing
-    _currentState as currentState,
-    _turnCounter as turnCounter,
-};
+    console.log(`${LOG_PREFIX} Extension registered.`);
+
+    // Initialize for current chat if one is already open
+    initialize().catch(err => console.error(`${LOG_PREFIX} Init error:`, err));
+})();

@@ -17,9 +17,11 @@ let _snapshotCounter = 0;
 
 /**
  * Initialize snapshot manager — count existing snapshots.
+ * Resets counter before scanning so it works correctly on chat switch.
  * @param {string} bookName
  */
 async function init(bookName) {
+    _snapshotCounter = 0;
     const entries = await getEntries(bookName);
     for (const entry of Object.values(entries)) {
         if (entry.comment && entry.comment.startsWith(SNAPSHOT_PREFIX)) {

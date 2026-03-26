@@ -1,31 +1,136 @@
-/* Gravity Ledger — Minimalist Panel */
+/* Gravity Ledger — Floating Popup Panel */
+
+/* ── Popup container ────────────────────────────────── */
 
 #gravity-ledger-panel {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 320px;
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--SmartThemeBodyColor, #1a1a1a);
+    border: 1px solid var(--SmartThemeBorderColor, #444);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     font-family: var(--mainFontFamily, 'Noto Sans', sans-serif);
     font-size: 12px;
     color: var(--SmartThemeBodyColor, #ccc);
-    padding: 8px;
+    overflow: hidden;
 }
 
-#gravity-ledger-panel .gl-header {
+#gravity-ledger-panel.gl-hidden {
+    display: none;
+}
+
+/* ── Popup header (drag handle) ─────────────────────── */
+
+#gravity-ledger-panel .gl-popup-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 6px;
-    padding-bottom: 4px;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.05));
     border-bottom: 1px solid var(--SmartThemeBorderColor, #444);
+    cursor: grab;
+    user-select: none;
+    flex-shrink: 0;
 }
 
-#gravity-ledger-panel .gl-header h3 {
-    margin: 0;
+#gravity-ledger-panel .gl-popup-header:active {
+    cursor: grabbing;
+}
+
+#gravity-ledger-panel .gl-popup-title {
+    font-weight: 700;
     font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    flex: 1;
 }
 
 #gravity-ledger-panel .gl-status {
     font-size: 10px;
     opacity: 0.6;
+}
+
+#gravity-ledger-panel .gl-popup-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.5;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+#gravity-ledger-panel .gl-popup-close:hover {
+    opacity: 1;
+}
+
+/* ── Toolbar ─────────────────────────────────────────── */
+
+#gravity-ledger-panel .gl-toolbar {
+    display: flex;
+    gap: 4px;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--SmartThemeBorderColor, #444);
+    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.02));
+    flex-shrink: 0;
+}
+
+#gravity-ledger-panel .gl-book-select {
+    flex: 1;
+    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--SmartThemeBorderColor, #444);
+    border-radius: 4px;
+    color: inherit;
+    font-size: 11px;
+    font-family: monospace;
+    padding: 4px 6px;
+    min-width: 0;
+    max-width: 180px;
+    cursor: pointer;
+}
+
+#gravity-ledger-panel .gl-book-select[size] {
+    overflow-y: auto;
+    height: auto;
+    max-height: 120px;
+}
+
+#gravity-ledger-panel .gl-book-select option {
+    padding: 2px 4px;
+    text-overflow: ellipsis;
+}
+
+#gravity-ledger-panel .gl-toolbar-btn {
+    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--SmartThemeBorderColor, #444);
+    border-radius: 4px;
+    color: inherit;
+    font-size: 11px;
+    padding: 4px 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+#gravity-ledger-panel .gl-toolbar-btn:hover {
+    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.12));
+}
+
+#gravity-ledger-panel .gl-toolbar-btn-icon {
+    padding: 4px 8px;
+}
+
+/* ── Popup body (scrollable) ────────────────────────── */
+
+#gravity-ledger-panel .gl-popup-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
 }
 
 /* ── Folder (collapsible section) ────────────────────── */
@@ -44,12 +149,12 @@
     padding: 5px 8px;
     cursor: pointer;
     user-select: none;
-    background: var(--SmartThemeBlurTintColor, rgba(255,255,255,0.03));
+    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.03));
     transition: background 0.15s;
 }
 
 #gravity-ledger-panel .gl-folder-head:hover {
-    background: var(--SmartThemeBlurTintColor, rgba(255,255,255,0.07));
+    background: var(--SmartThemeBlurTintColor, rgba(255, 255, 255, 0.07));
 }
 
 #gravity-ledger-panel .gl-folder-arrow {
@@ -91,7 +196,7 @@
 
 #gravity-ledger-panel .gl-item {
     padding: 3px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     line-height: 1.4;
 }
 
@@ -159,14 +264,25 @@
     padding: 4px 0;
 }
 
-/* ── Turn counter / footer ───────────────────────────── */
+/* ── Footer ──────────────────────────────────────────── */
 
 #gravity-ledger-panel .gl-footer {
-    margin-top: 6px;
-    padding-top: 4px;
+    padding: 6px 10px;
     border-top: 1px solid var(--SmartThemeBorderColor, #444);
     font-size: 10px;
     opacity: 0.4;
     display: flex;
     justify-content: space-between;
+    flex-shrink: 0;
+}
+
+/* ── Toggle button in wand menu ──────────────────────── */
+
+#gravity-ledger-toggle {
+    cursor: pointer;
+}
+
+#gravity-ledger-toggle i {
+    width: 16px;
+    text-align: center;
 }

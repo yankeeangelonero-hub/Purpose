@@ -1,0 +1,123 @@
+{
+  "lorebookName": "FFVII_Midgar_Opening_Lorebook",
+  "root": {
+    "id": "tv_1773212849151_3g2r5i39",
+    "label": "Root",
+    "summary": "Top-level index for FFVII_Midgar_Opening_Lorebook",
+    "entryUids": [
+      10,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "children": [
+      {
+        "id": "tv_1773212849151_0768601q",
+        "label": "World & Setting",
+        "summary": "These entries cover the setting of Midgar and the Planet, detailing the industrial city's structure, the extraction of Mako energy, and specific locations within the Sector 7 slums like Seventh Heaven. They provide foundational lore regarding the environment, energy sources, and key geographical landmarks.",
+        "entryUids": [],
+        "children": [
+          {
+            "id": "tv_1773212849151_2m1u062w",
+            "label": "World Overview",
+            "summary": "These entries describe the industrial city of Midgar and its structure under Shinra, as well as explaining the nature of Mako energy and the Planet's Lifestream.",
+            "entryUids": [
+              0,
+              1
+            ],
+            "children": [],
+            "collapsed": false
+          },
+          {
+            "id": "tv_1773212849151_5r410o1h",
+            "label": "Specific Locations",
+            "summary": "Detailed information about particular places",
+            "entryUids": [
+              2,
+              11
+            ],
+            "children": [],
+            "collapsed": false
+          }
+        ],
+        "collapsed": false
+      },
+      {
+        "id": "tv_1773212849151_2257081o",
+        "label": "Factions",
+        "summary": "These entries detail the opposing factions of Avalanche and the Shinra Electric Power Company, focusing on their conflict regarding Mako energy and their respective roles as a resistance group and a ruling megacorporation.",
+        "entryUids": [
+          3,
+          4
+        ],
+        "children": [],
+        "collapsed": false
+      },
+      {
+        "id": "tv_1773212849151_63162c06",
+        "label": "Characters",
+        "summary": "These entries provide character profiles for the main cast of Final Fantasy VII, focusing on the Avalanche resistance group and their allies. They detail the individuals' roles, personalities, relationships, and backgrounds.",
+        "entryUids": [],
+        "children": [
+          {
+            "id": "tv_1773212849151_6w6r410v",
+            "label": "Main Characters",
+            "summary": "These entries profile the main characters Cloud Strife, Barret Wallace, and Tifa Lockhart, outlining their roles within the Avalanche group, their personalities, and key background details.",
+            "entryUids": [
+              5,
+              6,
+              7
+            ],
+            "children": [],
+            "collapsed": false
+          },
+          {
+            "id": "tv_1773212849151_3m424p4t",
+            "label": "Supporting Characters",
+            "summary": "This entry details the supporting characters Jessie, Biggs, and Wedge, identifying them as the core foot soldiers of Barret's Avalanche cell and noting Jessie's specific role as the team's tech expert.",
+            "entryUids": [
+              8
+            ],
+            "children": [],
+            "collapsed": false
+          }
+        ],
+        "collapsed": false
+      },
+      {
+        "id": "tv_1773212849151_5b143i1u",
+        "label": "Current Events",
+        "summary": "These entries cover the current state of affairs in the immediate aftermath of the bombing of Mako Reactor 1, including details about Avalanche's successful mission and the developing consequences of the attack near Midgar's Sector 1.",
+        "entryUids": [],
+        "children": [],
+        "collapsed": false
+      },
+      {
+        "id": "tv_1774020763743_06730p40",
+        "label": "Summaries",
+        "summary": "Temporal scene summaries and event records created by the AI.",
+        "entryUids": [],
+        "children": [
+          {
+            "id": "tv_1774193391274_3w256d1h",
+            "label": "Arc 1: The Reactor",
+            "summary": "",
+            "entryUids": [
+              21,
+              22
+            ],
+            "children": [],
+            "collapsed": false,
+            "isArc": true
+          }
+        ],
+        "collapsed": false
+      }
+    ],
+    "collapsed": false
+  },
+  "version": 1,
+  "lastBuilt": 1773212849151
+}
