@@ -397,7 +397,7 @@
     {
       "identifier": "pr0se000-0001-4000-a000-000000000001",
       "name": "  ① Noir Realist",
-      "system_prompt": false,
+      "system_prompt": true,
       "enabled": true,
       "marker": false,
       "role": "system",
