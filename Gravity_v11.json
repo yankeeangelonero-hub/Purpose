@@ -22,7 +22,7 @@
   "personality_format": "{{personality}}{{trim}}",
   "group_nudge_prompt": "",
   "stream_openai": true,
-  "assistant_prefill": "",
+  "assistant_prefill": "---DEDUCTION---\n",
   "assistant_impersonation": "",
   "use_sysprompt": true,
   "squash_system_messages": true,
