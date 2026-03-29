@@ -31,7 +31,7 @@
   "continue_prefill": false,
   "continue_postfix": "\n\n",
   "function_calling": true,
-  "show_thoughts": false,
+  "show_thoughts": true,
   "reasoning_effort": "low",
   "verbosity": "auto",
   "enable_web_search": false,
