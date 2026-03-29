@@ -257,7 +257,7 @@
     {
       "identifier": "86856525-9937-41b6-a30d-95150e298b3b",
       "name": "  ② Present Tense",
-      "system_prompt": false,
+      "system_prompt": true,
       "enabled": true,
       "marker": false,
       "role": "system",
@@ -313,7 +313,7 @@
     {
       "identifier": "dd193663-d125-4184-9f3d-616afc9be83b",
       "name": "  ③ Second-Person",
-      "system_prompt": false,
+      "system_prompt": true,
       "enabled": true,
       "marker": false,
       "role": "system",
@@ -341,7 +341,7 @@
     {
       "identifier": "e90a276e-4ddd-4c81-8369-7a63e9b134ae",
       "name": "  ① Omniscient",
-      "system_prompt": false,
+      "system_prompt": true,
       "enabled": true,
       "marker": false,
       "role": "system",
