@@ -1,64 +1,87 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with code in this repository.
 
 ## What This Is
 
-Purpose is a **SillyTavern preset system** (v8) for interactive fiction and roleplay. It consists of two JSON files that define an LLM prompting framework — not a software project with build steps or tests.
+This repo contains two related but distinct systems for SillyTavern:
 
-- **Purpose_v8.json** — The main preset. Contains API parameters, prompt ordering, and a layered prompt architecture assembled from toggle blocks and injected prompt segments.
-- **Purpose_Preset_Tools.json** — Companion lorebook/world info entries. Contains keyword-triggered tool prompts (OOC commands) that activate when specific phrases appear in chat.
+1. **Gravity** — A narrative engine preset + companion SillyTavern extension. The LLM outputs structured `---LEDGER---` blocks after each response; the extension parses them to maintain a live state machine (characters, constraints, collisions, chapters).
 
-## Architecture
+2. **Purpose** (legacy, in `Reference/`) — An earlier preset architecture based on toggle blocks, `{{setvar}}`/`{{getvar}}` macros, and layered prompts (L0–L3). Kept for reference only.
 
-### Purpose_v8.json — Layered Prompt System
+## Repository Layout
 
-The preset builds a prompt from composable sections. The `prompts` array contains both **marker slots** (SillyTavern injection points like `charDescription`, `chatHistory`) and **custom prompt segments** organized into:
+```
+Gravity_v11.json              — Current Gravity preset (API params + prompt ordering)
+Gravity_v10_r.json            — Previous Gravity version (reference)
+Gravity_v10_Preset_Tools.json — Companion lorebook for Gravity v10
+gravity-ledger/               — SillyTavern extension (JS) — the state engine
+  index.js                    — Entry point, wires everything together
+  state-machine.js            — Ledger transaction processor, entity CRUD
+  state-compute.js            — Derived state calculations
+  state-view.js               — Lorebook entry rendering (dossiers, collisions, etc.)
+  ledger-store.js             — Persistence (SillyTavern chat metadata)
+  regex-intercept.js          — Intercepts LLM output to extract LEDGER blocks
+  consistency.js              — Drift detection + auto-nudge injection
+  snapshot-mgr.js             — Snapshot/rollback management
+  ooc-handler.js              — OOC command dispatch (eval, snapshot, rollback, history)
+  lorebook-api.js             — SillyTavern lorebook read/write API wrapper
+  ui-panel.js                 — Settings/debug panel UI
+  gravity-system-prompt.md    — Canonical system prompt (paste into character card)
+  Persona_Engine_Lorebook.json — Persona support lorebook
+  Persona_TifaLockhart_v4.json — Example persona card
+Examples/                     — Example lore books
+Reference/                    — Old Purpose v8/v9 files; do not edit
+```
 
-**Section A — Toggle Blocks (Groups 1–8):** Mutually exclusive options configured by enabling exactly one per group. Each uses `{{setvar::key::value}}` to set a variable consumed downstream.
-- Group 1: Role (Roleplayer / Game Master / Writer)
-- Group 2: Tense (Past / Present)
-- Group 3: Narration (Third-Person / First-Person / Second-Person)
-- Group 4: Perspective (Omniscient / Character's POV / User's POV)
-- Group 5: Length (Flexible / Page / Short / Moderate)
-- Group 6: Guidelines (NSFW / SFW)
-- Group 7: Voice Declaration (player-configured via OOC)
-- Group 8: Tone Declaration (player-configured via OOC)
+## Gravity Architecture
 
-**Core Layers (L0–L3):** The main system instructions, always-on or toggled per use case.
-- **L0 — The Dossiers:** Character registry (5 NPC slots with 5-layer dossiers: State, Synopsis, Relationships, Key Moments, Noticed Details), PC dossier, and World dossier (factions, world state, pressure points, story arcs). All stored via `{{getvar::}}` / `{{setvar::}}` macros.
-- **L1 — The Machine:** State management protocol. Defines TURN_STATE (inline per-turn state block) and REGISTRY (variable persistence via SillyTavern macros). Specifies variable syntax (`setvar`, `addvar`, `incvar`) and what lives inline vs. in variables.
-- **L2 — The Engine:** Core game logic. Defines author principles (Logic, Fairness, Consistency, Honesty), entropy system (2d10 table), thread mechanics (story forces with distances that converge over time), deduction block format, knowledge firewall, death rules, pacing, and narrative architecture (history vs. draft).
-- **L3 — The Craft:** Prose rules. Voice matching, dialogue guidelines, concrete detail requirements, structural bans (specific phrases and patterns to avoid), dynamic description system, NPC generation rules.
+### Preset (Gravity_v11.json)
+Standard SillyTavern JSON preset. Key fields:
+- `prompts[]` — Prompt segments with `identifier`, `content`, `enabled`, `injection_position`, `injection_depth`
+- `prompt_order[]` — Injection sequence per `character_id` (100000 = default, 100001 = preset-specific)
+- `assistant_prefill` — Forces the model to begin output in a specific format
 
-**Additional Layers:**
-- **TunnelVision — World Bible:** Lorebook management protocol for persistent world-building (locations, NPCs, factions, events).
-- **Sonnet Reliability Anchor:** Anti-drift rules and turn sequence specification (Deduction → Prose → Scene tag → Dossier Changes → TURN_STATE → REGISTRY).
+### Extension (gravity-ledger/)
+A SillyTavern extension loaded from `manifest.json`. It does NOT run outside SillyTavern.
 
-### Purpose_Preset_Tools.json — OOC Command Lorebook
+**Data flow:**
+1. Model generates narrative + `---LEDGER--- [...] ---END LEDGER---` block
+2. `regex-intercept.js` strips the ledger block from visible output
+3. `state-machine.js` applies transactions to in-memory state
+4. `state-view.js` renders updated state into lorebook entries (injected into next context)
+5. `ledger-store.js` persists state in SillyTavern chat metadata
+6. `consistency.js` detects format drift and injects correction nudges
 
-Keyword-triggered entries that activate when the player types specific OOC phrases:
-- `OOC: set voice` / `OOC: configure` — Voice & tone setup wizard (16 questions)
-- `OOC: archive` — History archive protocol to keep variables lean
-- `OOC: preflight` / `OOC: status` — Health check for story foundations
-- `OOC: close chapter` / `OOC: next chapter` — Full chapter transition protocol (close + health check + open)
-- `OOC: enable danbooru` — Scene illustration via Danbooru tags (NovaFlat XL)
-- `OOC: enable zimage` — Scene illustration via natural language (Z-Image)
+**Ledger transaction ops:** `CR` (create), `TR` (transition), `S` (set field), `A` (append array), `R` (remove array), `MS` (map set), `MR` (map remove), `D` (destroy)
 
-Scene illustration entries are in a `scene_illustration` group (mutually exclusive).
+**Entity types:** `char`, `constraint`, `collision`, `chapter`, `world`, `pc`
+- `world` and `pc` are singletons — no `id` field
+- Entity IDs are kebab-case and immutable once assigned
+- State machine transitions (`TR`) cannot skip levels (e.g., KNOWN → TRACKED → PRINCIPAL, never KNOWN → PRINCIPAL)
 
-## Key Concepts for Editing
+### System Prompt (gravity-system-prompt.md)
+The canonical instructions pasted into a character card. Defines:
+- Core principles (show don't tell, constraint-driven drama, collision architecture)
+- Character tier system: UNKNOWN → KNOWN → TRACKED → PRINCIPAL
+- Constraint structure and integrity levels: STABLE → STRESSED → CRITICAL → BREACHED
+- Collision structure and distance countdown (10 → 0)
+- Chapter lifecycle: PLANNED → OPEN → CLOSING → CLOSED
+- Ledger format spec and OOC commands
 
-- **Variable flow:** Toggle blocks set variables via `{{setvar::}}` → Core layers consume them via `{{getvar::}}`. Renaming a variable key in one place requires updating all references.
-- **Prompt ordering:** The `prompt_order` arrays (character_id `100000` for default, `100001` for preset-specific) control injection sequence. Identifier UUIDs must match between `prompts` entries and `prompt_order` entries.
-- **Injection position:** `injection_position: 0` = in-chat, `injection_position: 1` = after system prompt. `injection_depth` controls how many messages from the end to inject.
-- **Entry activation in the lorebook:** `key` arrays define trigger phrases. `sticky` keeps the entry active for N additional turns. `scanDepth` controls how far back in chat to scan for keywords. `constant: true` means always active.
-- **The `{{trim}}` macro** strips whitespace from disabled/empty toggle blocks to keep the prompt clean.
+## Key Editing Rules
 
-## Editing Guidelines
+### JSON Preset
+- `prompt_order` UUIDs must match `identifier` fields in `prompts[]` — mismatches silently drop prompts
+- `injection_position: 0` = in-chat, `injection_position: 1` = after system prompt
+- `injection_depth` counts messages from the end of chat history
 
-- When modifying prompt content, preserve the `{{setvar::}}` / `{{getvar::}}` macro syntax exactly — mismatched braces or colons silently break variable storage.
-- Toggle group entries must remain mutually exclusive — only one enabled per group at a time.
-- The L0–L3 layer structure is load-bearing; L2 (Engine) references variables set by L0 (Dossiers) and toggle blocks, and L3 (Craft) references variables from both.
-- TURN_STATE and REGISTRY block formats in L1 are regex-parsed by the consuming model — structural changes to delimiters (`<!-- TURN_STATE -->`, `<!-- REGISTRY -->`) will break state tracking.
-- Lorebook entries in the tools file use `uid` as their key in the `entries` object — new entries should use the next sequential uid.
+### Extension JS
+- The extension runs in SillyTavern's browser context — standard web JS, no Node built-ins
+- `lorebook-api.js` wraps SillyTavern's internal lorebook API; check it before touching lorebooks directly
+- State is stored in `chat_metadata` via SillyTavern's `saveMetadata()` — not localStorage
+- `consistency.js` injects nudges by appending to the system prompt on the next turn; don't break the injection hook in `index.js`
+
+### Ledger Format
+The `---LEDGER---` / `---END LEDGER---` delimiters are parsed by regex — do not change them. The JSON array inside must be valid; malformed blocks are logged and skipped, not crashed on.
